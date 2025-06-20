@@ -9,7 +9,6 @@ app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-
 const port = process.env.PORT;
 
 mongoose.connect(process.env.MONGO_CONNECTION_STRING!)
