@@ -17,7 +17,7 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "start": "nodemon src/server.ts",
+    "start": "nodemon api/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },

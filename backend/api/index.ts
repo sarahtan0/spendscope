@@ -13,7 +13,9 @@ app.get("/", (req, res) => {
 
 // MongoDB connection (outside handler, runs once per cold start)
 mongoose.connect(process.env.MONGO_CONNECTION_STRING!)
-  .then(() => console.log("Mongoose connected"))
+  .then(() => {
+    console.log("Mongoose connected")
+  })
   .catch((err) => console.error("MongoDB connection error:", err));
 
 export const handler = serverless(app);
