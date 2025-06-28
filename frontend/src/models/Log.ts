@@ -1,4 +1,4 @@
-export interface Log {
+export interface LogObject {
     _id: string,
     title: string,
     cost: number,
