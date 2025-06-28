@@ -2,8 +2,14 @@ import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import logsRoutes from "./routes/logs";
 import morgan from "morgan";
+import cors from "cors";
 
 const app = express();
+
+app.use(cors({
+    origin: "http://localhost:3002",
+    credentials: true,
+}))
 
 app.use(express.json());
 
