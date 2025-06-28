@@ -1,10 +1,13 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import logsRoutes from "./routes/logs";
+import morgan from "morgan";
 
 const app = express();
 
 app.use(express.json());
+
+app.use(morgan("dev"));
 
 //middleware checking for /logs and then logsRoutes checks for path after that
 app.use("/logs", logsRoutes);
