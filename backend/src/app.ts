@@ -1,20 +1,11 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
-import LogModel from "./models/log";
+import logsRoutes from "./routes/logs";
 
 const app = express();
 
-//async because find() takes time to retrieve from db
-app.get("/", async (req: Request, res: Response, next: NextFunction) => {
-    //returns the db to user
-    try{
-        const notes = await LogModel.find().exec();
-        res.status(200).json(notes);
-    } 
-    catch (error) {
-        next(error);
-    }
-});
+//middleware checking for /logs and then logsRoutes checks for path after that
+app.use("/logs", logsRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(Error("Endpoint not found"));

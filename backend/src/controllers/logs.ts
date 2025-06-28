@@ -5,7 +5,7 @@ export const getLog: RequestHandler = async (req: Request, res: Response, next: 
     try {
         const logs = await LogModel.find().exec();
         //turn logs into a json and return it with a good status
-        res.json(200).json(logs);
+        res.status(200).json(logs);
     } catch (error) {
         next(error);
     }
