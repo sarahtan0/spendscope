@@ -1,7 +1,9 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import LogModel from "../models/log"
+import LogModel from "../models/log";
+import createHttpError from "http-errors";
+import mongoose from "mongoose";
 
-export const getLog: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const getLogs: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const logs = await LogModel.find().exec();
         //turn logs into a json and return it with a good status
@@ -23,6 +25,18 @@ export const createLog: RequestHandler = async (req: Request, res: Response, nex
         });
 
         res.status(201).json(newLog);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export const getLog: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+    const logId = req.params.logId;
+    try{
+        if (!mongoose.isValidObjectId(logId)) throw createHttpError(400, "Invalid Log Id");
+        const log = await LogModel.findById(logId).exec();
+        if (!log) throw createHttpError(400, "Log not found");
+        res.status(200).json(log);
     } catch (error) {
         next(error);
     }

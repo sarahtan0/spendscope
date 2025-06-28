@@ -3,8 +3,10 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/", LogsController.getLog);
+router.get("/", LogsController.getLogs);
 
 router.post("/", LogsController.createLog);
+
+router.get("/:logId", LogsController.getLog);
 
 export default router;
