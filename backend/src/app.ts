@@ -4,6 +4,8 @@ import logsRoutes from "./routes/logs";
 
 const app = express();
 
+app.use(express.json());
+
 //middleware checking for /logs and then logsRoutes checks for path after that
 app.use("/logs", logsRoutes);
 

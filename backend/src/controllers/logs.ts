@@ -10,3 +10,20 @@ export const getLog: RequestHandler = async (req: Request, res: Response, next: 
         next(error);
     }
 }
+
+export const createLog: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+    const title = req.body.title;
+    const cost = req.body.cost;
+    const section = req.body.section;
+    try {
+        const newLog = await LogModel.create({
+            title: title,
+            cost: cost,
+            section: section,
+        });
+
+        res.status(201).json(newLog);
+    } catch (error) {
+        next(error);
+    }
+}

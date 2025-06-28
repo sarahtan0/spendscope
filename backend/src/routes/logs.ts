@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.get("/", LogsController.getLog);
 
+router.post("/", LogsController.createLog);
+
 export default router;
