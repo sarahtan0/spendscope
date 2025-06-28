@@ -11,4 +11,6 @@ router.get("/:logId", LogsController.getLog);
 
 router.delete("/:logId", LogsController.deleteLog);
 
+router.post("/:noteId", LogsController.updateLog);
+
 export default router;

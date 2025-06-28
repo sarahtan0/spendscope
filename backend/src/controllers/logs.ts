@@ -13,7 +13,13 @@ export const getLogs: RequestHandler = async (req: Request, res: Response, next:
     }
 }
 
-export const createLog: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+interface CreateLogBody {
+    title?: string,
+    cost?: number,
+    section?: string,
+}
+
+export const createLog: RequestHandler<unknown, unknown, CreateLogBody, unknown> = async (req: Request<unknown, unknown, CreateLogBody, unknown>, res: Response, next: NextFunction) => {
     const title = req.body.title;
     const cost = req.body.cost;
     const section = req.body.section;
@@ -52,6 +58,40 @@ export const deleteLog: RequestHandler = async (req: Request, res: Response, nex
         await LogModel.deleteOne();
         res.sendStatus(204);
     } catch (error) {
+        next(error);
+    }
+}
+
+interface UpdateLogParams {
+    logId?: string,
+}
+
+interface UpdateLogBody {
+    title: string,
+    cost: number,
+    section: string,
+}
+
+export const updateLog: RequestHandler<UpdateLogParams, unknown, UpdateLogBody, unknown> = async (req: Request<UpdateLogParams, unknown, UpdateLogBody, unknown> , res: Response, next: NextFunction) => {
+    const logId = req.params.logId;
+    const newTitle = req.body.title;
+    const newCost = req.body.cost;
+    const newSection = req.body.section;
+
+    try {
+        if(!mongoose.isValidObjectId(logId)) throw createHttpError(400, "Invalid log id");
+        if(!newTitle) throw createHttpError(400, "Note must have a title");
+        const log = await LogModel.findById(logId).exec();
+        if (!log) throw createHttpError(400, "Log not found");
+
+        log.title = newTitle;
+        log.cost = newCost;
+        log.section = newSection;
+
+        const newLog = await log.save();
+        res.status(204).json(newLog);
+        
+    } catch(error) {
         next(error);
     }
 }
