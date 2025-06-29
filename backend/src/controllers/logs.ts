@@ -55,7 +55,7 @@ export const deleteLog: RequestHandler = async (req: Request, res: Response, nex
         if(!mongoose.isValidObjectId(logId)) throw createHttpError(400, "Invalid log id");
         const log = await LogModel.findById(logId).exec();
         if (!log) throw createHttpError(400, "Log not found");
-        await LogModel.deleteOne();
+        await log.deleteOne();
         res.sendStatus(204);
     } catch (error) {
         next(error);

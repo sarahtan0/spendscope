@@ -21,7 +21,7 @@ function App() {
     <>
       <Stack gap={3}>
         {logs.map(log => (
-            <Log
+            <Log 
               log={log}
             />
           )
