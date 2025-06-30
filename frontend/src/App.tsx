@@ -20,15 +20,6 @@ function App() {
     
   }, [])
 
-  async function deleteLog(note: LogObject){
-    try {
-      await LogsApi.deleteLog(note._id);
-      setLogs(logs.filter(existingLog => existingLog._id !== note._id));
-    } catch (error) {
-      console.error(error);
-      alert(error);
-    }
-  }
 
   return (
     <>
@@ -36,7 +27,10 @@ function App() {
         {logs.map(log => (
             <Log 
               log={log}
-              deleteClicked={() => {deleteLog(log)}}
+              deleteClicked={() => {
+                LogsApi.deleteLog(log._id);
+                setLogs(logs.filter(existingLog => existingLog._id !== log._id));
+              }}
             />
           )
         )}
