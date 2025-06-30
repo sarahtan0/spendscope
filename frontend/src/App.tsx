@@ -4,6 +4,7 @@ import {LogObject} from "./models/log";
 import Log from "./components/Log";
 import { Stack } from 'react-bootstrap';
 import styleUtils from "./styles/utils.module.css"
+import * as LogsApi from "./networks/logs_api";
 
 function App() {
   const [logs, setLogs] = useState<LogObject[]>([]);
@@ -24,6 +25,7 @@ function App() {
         {logs.map(log => (
             <Log 
               log={log}
+              deleteClicked={() => LogsApi.deleteLog(log._id)}
             />
           )
         )}
