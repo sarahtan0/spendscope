@@ -48,3 +48,16 @@ export async function createLog(log: LogInput): Promise<LogObject> {
     });
     return response.json();
 }
+
+export async function updateLog(logId: string, log: LogInput): Promise<LogObject> {
+    const response = await fetchData("/logs/" + logId, 
+    {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(log)
+    });
+    return response.json();
+}

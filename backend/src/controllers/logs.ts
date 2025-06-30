@@ -89,7 +89,7 @@ export const updateLog: RequestHandler<UpdateLogParams, unknown, UpdateLogBody, 
         log.section = newSection;
 
         const newLog = await log.save();
-        res.status(204).json(newLog);
+        res.status(200).json(newLog);
         
     } catch(error) {
         next(error);

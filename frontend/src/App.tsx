@@ -9,6 +9,7 @@ import AddLogModal from "./components/AddEditLogModal";
 function App() {
   const [logs, setLogs] = useState<LogObject[]>([]);
   const [showAddLog, setShowAddLog] = useState(false);
+  const [currentlyEditing, setCurrentlyEditing] = useState<LogObject|null>(null);
 
   useEffect(() => {
     async function getLogs(){
@@ -26,6 +27,7 @@ function App() {
       <Stack gap={3}>
         {logs.map(log => (
             <Log 
+              onLogClicked={(log) => setCurrentlyEditing(log)}
               log={log}
               deleteClicked={() => {
                 LogsApi.deleteLog(log._id);
@@ -44,6 +46,18 @@ function App() {
             setLogs([...logs, newLogs])
             setShowAddLog(false);
           }}
+          logToEdit={null}
+        />
+      }
+
+      {currentlyEditing && 
+        <AddLogModal
+          onDismiss={() => setCurrentlyEditing(null)}
+          onLogSaved={(updatedLog) => {
+            setCurrentlyEditing(null);
+            logs.map(currentLog => currentLog._id === updatedLog._id ? updatedLog : currentLog);
+          }}
+          logToEdit={currentlyEditing}
         />
       }
     </>

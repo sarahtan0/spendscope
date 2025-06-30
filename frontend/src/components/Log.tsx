@@ -2,13 +2,14 @@ import {LogObject} from "../models/log";
 import { Card } from "react-bootstrap";
 
 interface LogProps {
-    log: LogObject
-    deleteClicked: (log: LogObject) => void
+    log: LogObject,
+    deleteClicked: (log: LogObject) => void,
+    onLogClicked: (log:LogObject) => void,
 }
 
-const Log = ({log, deleteClicked} : LogProps) => {
+const Log = ({log, deleteClicked, onLogClicked} : LogProps) => {
     return(
-        <Card style={{ width: '80rem' }}>
+        <Card style={{ width: '80rem' }} onClick={() => onLogClicked(log)}>
             <Card.Title>{log.title}</Card.Title>
             <Card.Subtitle> {log.section} </Card.Subtitle>
             <Card.Body>

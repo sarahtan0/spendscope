@@ -8,15 +8,28 @@ import * as LogsApi from "../networks/logs_api"
 interface LogModalProps {
     onDismiss: () => void,
     onLogSaved: (log: LogObject) => void,
+    logToEdit: LogObject|null,
 }
 
-function AddLogModal({onDismiss, onLogSaved}: LogModalProps) {
+function AddLogModal({onDismiss, onLogSaved, logToEdit}: LogModalProps) {
 
-    const {register, handleSubmit, control, formState : {errors, isSubmitting}} = useForm<LogInput>();
+    const {register, handleSubmit, control, formState : {errors, isSubmitting}} = useForm<LogInput>({
+        defaultValues: {
+            title: logToEdit?.title || "",
+            cost: logToEdit?.cost || 0,
+            section: logToEdit?.section || "",
+        }
+    });
 
     async function onSubmit(input: LogInput){
         try{
-            const logResponse = await LogsApi.createLog(input);
+            let logResponse: LogObject;
+            if(logToEdit){
+                console.log(input);
+                logResponse = await LogsApi.updateLog(logToEdit._id, input);
+            } else {
+                logResponse = await LogsApi.createLog(input);
+            }
             onLogSaved(logResponse);
         } catch (error){
             console.error(error);
@@ -27,7 +40,7 @@ function AddLogModal({onDismiss, onLogSaved}: LogModalProps) {
     return(
         <Modal show onHide={onDismiss}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Log</Modal.Title>
+                <Modal.Title>{logToEdit ? "Edit Log" : "Add Log"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form id="addLogForm" onSubmit={handleSubmit(onSubmit)}>
@@ -58,8 +71,10 @@ function AddLogModal({onDismiss, onLogSaved}: LogModalProps) {
                                         decimalScale={2}
                                         allowNegative={false}
                                         placeholder="$0.00"
+                                        value={field.value ?? ""}
+                                        fixedDecimalScale
                                         onValueChange={(values) => {
-                                            field.onChange(values.floatValue ?? 0);
+                                            field.onChange(values.floatValue ?? "");
                                         }}
                                     />
                                 )}
@@ -72,11 +87,11 @@ function AddLogModal({onDismiss, onLogSaved}: LogModalProps) {
                             isInvalid={!!errors.section}
                             {...register("section", { required: "Required" })}>
                             <option value="">Select a category</option>
-                            <option value="Clothes">Clothes</option>
-                            <option value="Food">Food</option>
-                            <option value="Groceries">Groceries</option>
-                            <option value="Essentials">Essentials</option>
-                            <option value="Miscellaneous">Miscellaneous</option>
+                            <option value="clothes">Clothes</option>
+                            <option value="food">Food</option>
+                            <option value="groceries">Groceries</option>
+                            <option value="essentials">Essentials</option>
+                            <option value="misc">Miscellaneous</option>
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                             {errors.section?.message}
