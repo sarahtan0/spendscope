@@ -15,6 +15,14 @@ async function fetchData (input: RequestInfo, init?: RequestInit){
     }
 }
 
+export async function getLogs() {
+    const response = await fetchData("/logs", {
+        method: "GET",
+        credentials: "include",
+    });
+    return response.json();
+}
+
 export async function deleteLog(logId: string) {
     await fetchData("/logs/" + logId, 
         {
