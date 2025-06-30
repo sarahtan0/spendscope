@@ -15,7 +15,7 @@ async function fetchData (input: RequestInfo, init?: RequestInit){
     }
 }
 
-export async function getLogs() {
+export async function getLogs():Promise<LogObject[]> {
     const response = await fetchData("/logs", {
         method: "GET",
         credentials: "include",
@@ -29,4 +29,22 @@ export async function deleteLog(logId: string) {
             method: 'DELETE',
             credentials: "include"
     });
+}
+
+export interface LogInput {
+    title: string,
+    cost: number,
+    section: string,
+}
+
+export async function createLog(log: LogInput): Promise<LogObject> {
+    const response = await fetchData("/logs", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(log),
+    });
+    return response.json();
 }
