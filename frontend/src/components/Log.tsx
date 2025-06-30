@@ -1,4 +1,4 @@
-import {LogObject} from "../models/log";
+import {LogObject} from "../models/Log";
 import { Card } from "react-bootstrap";
 
 interface LogProps {

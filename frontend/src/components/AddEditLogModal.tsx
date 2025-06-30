@@ -1,6 +1,6 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { NumericFormat } from "react-number-format";
-import { LogObject } from "../models/log";
+import { LogObject } from "../models/Log";
 import { Controller, useForm } from "react-hook-form";
 import { LogInput } from "../networks/logs_api";
 import * as LogsApi from "../networks/logs_api"

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import {LogObject} from "./models/log";
+import {LogObject} from "./models/Log";
 import Log from "./components/Log";
 import { Button, Stack } from 'react-bootstrap';
 import * as LogsApi from "./networks/logs_api";

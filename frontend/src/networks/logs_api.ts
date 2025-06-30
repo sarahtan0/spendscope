@@ -1,4 +1,4 @@
-import { LogObject } from "../models/log";
+import { LogObject } from "../models/Log";
 
 const baseUrl = process.env.REACT_APP_BACKEND_URL ?? "http://localhost:2000"; // fallback for local dev
 
