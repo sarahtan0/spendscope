@@ -1,13 +1,9 @@
 import {LogObject} from "../models/log";
 import { Card } from "react-bootstrap";
+import * as LogsApi from "../networks/logs_api";
 
 interface LogProps {
     log: LogObject
-}
-
-async function deleteLog(logId: string) {
-    console.log(logId);
-    await fetch('http://localhost:2000/logs/' + logId, {method: 'DELETE'});
 }
 
 const Log = ({log} : LogProps) => {
@@ -18,7 +14,7 @@ const Log = ({log} : LogProps) => {
             <Card.Body>
                 <div>
                     {log.cost}
-                    <button onClick={() => deleteLog(log._id)}> DELETE </button>
+                    <button onClick={() => LogsApi.deleteLog(log._id)}> DELETE </button>
                 </div>
             </Card.Body>
             <Card.Footer>

@@ -9,7 +9,8 @@ function App() {
   const [logs, setLogs] = useState<LogObject[]>([]);
   useEffect(() => {
     async function getLogs(){
-      const response = await fetch('http://localhost:2000/logs', {method: 'GET'});
+      console.log(process.env.REACT_APP_BACKEND_URL!);
+      const response = await fetch(process.env.REACT_APP_BACKEND_URL! + "/logs", {method: 'GET'});
       const logs = await response.json()
       setLogs(logs);
     }
