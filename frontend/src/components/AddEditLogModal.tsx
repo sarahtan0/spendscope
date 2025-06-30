@@ -52,6 +52,7 @@ function AddLogModal({onDismiss, onLogSaved}: LogModalProps) {
                                 rules={{required: "Required"}}
                                 render={({field}) => (
                                     <NumericFormat
+                                        className={`form-control ${errors.cost ? "is-invalid" : ""}`}
                                         thousandSeparator
                                         prefix="$"
                                         decimalScale={2}
@@ -67,8 +68,10 @@ function AddLogModal({onDismiss, onLogSaved}: LogModalProps) {
                     </Form.Group>
                     <Form.Group className="mb-3">
                         <Form.Label>Category</Form.Label>
-                        <Form.Select {...register("section", { required: "Required" })}>
-                            <option>Select a category</option>
+                        <Form.Select 
+                            isInvalid={!!errors.section}
+                            {...register("section", { required: "Required" })}>
+                            <option value="">Select a category</option>
                             <option value="Clothes">Clothes</option>
                             <option value="Food">Food</option>
                             <option value="Groceries">Groceries</option>
