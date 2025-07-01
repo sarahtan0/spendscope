@@ -55,7 +55,7 @@ function App() {
           onDismiss={() => setCurrentlyEditing(null)}
           onLogSaved={(updatedLog) => {
             setCurrentlyEditing(null);
-            logs.map(currentLog => currentLog._id === updatedLog._id ? updatedLog : currentLog);
+            setLogs(logs.map(currentLog => currentLog._id === updatedLog._id ? updatedLog : currentLog));
           }}
           logToEdit={currentlyEditing}
         />
