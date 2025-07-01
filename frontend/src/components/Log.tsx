@@ -1,5 +1,5 @@
 import {LogObject} from "../models/Log";
-import { Card } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 
 interface LogProps {
     log: LogObject,
@@ -9,17 +9,21 @@ interface LogProps {
 
 const Log = ({log, deleteClicked, onLogClicked} : LogProps) => {
     return(
-        <Card style={{ width: '80rem' }} onClick={() => onLogClicked(log)}>
-            <Card.Title>{log.title}</Card.Title>
-            <Card.Subtitle> {log.section} </Card.Subtitle>
+        <Card style={{ width: '80vw' }} onClick={() => onLogClicked(log)}>
             <Card.Body>
-                <div>
-                    {log.cost}
-                    <button onClick={(e) => {
-                        deleteClicked(log)
-                        e.stopPropagation()
-                    }}> DELETE </button>
-                </div>
+                <Card.Title>
+                    {log.title}
+                    <button
+                        onClick={(e) => {
+                            deleteClicked(log);
+                            e.stopPropagation();
+                        }}
+                    > DELETE </button>
+                </Card.Title>
+                <Card.Text> 
+                    {log.section} 
+                </Card.Text>
+                ${log.cost}
             </Card.Body>
             <Card.Footer>
                 <div>

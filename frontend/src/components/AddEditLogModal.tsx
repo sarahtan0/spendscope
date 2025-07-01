@@ -72,7 +72,6 @@ function AddLogModal({onDismiss, onLogSaved, logToEdit}: LogModalProps) {
                                         allowNegative={false}
                                         placeholder="$0.00"
                                         value={field.value ?? ""}
-                                        fixedDecimalScale
                                         onValueChange={(values) => {
                                             field.onChange(values.floatValue ?? "");
                                         }}
@@ -87,11 +86,11 @@ function AddLogModal({onDismiss, onLogSaved, logToEdit}: LogModalProps) {
                             isInvalid={!!errors.section}
                             {...register("section", { required: "Required" })}>
                             <option value="">Select a category</option>
-                            <option value="clothes">Clothes</option>
-                            <option value="food">Food</option>
-                            <option value="groceries">Groceries</option>
-                            <option value="essentials">Essentials</option>
-                            <option value="misc">Miscellaneous</option>
+                            <option value="Clothes">Clothes</option>
+                            <option value="Food">Food</option>
+                            <option value="Groceries">Groceries</option>
+                            <option value="Essentials">Essentials</option>
+                            <option value="Miscellaneous">Miscellaneous</option>
                         </Form.Select>
                         <Form.Control.Feedback type="invalid">
                             {errors.section?.message}
