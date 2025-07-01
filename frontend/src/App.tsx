@@ -41,29 +41,25 @@ function App() {
 
       {!errorLoadingLogs && !loadingLogs && 
         (logs.length > 0 ? (
-          <>
-            <Stack gap={3}>
-              {logs.map(log => (
-                  <Log 
-                    onLogClicked={(log) => setCurrentlyEditing(log)}
-                    log={log}
-                    deleteClicked={() => {
-                      LogsApi.deleteLog(log._id);
-                      setLogs(logs.filter(existingLog => existingLog._id !== log._id));
-                    }}
-                  />
-                )
-              )}
-            </Stack>
-
-
-          </>
+          <Stack gap={3}>
+            {logs.map(log => (
+                <Log 
+                  onLogClicked={(log) => setCurrentlyEditing(log)}
+                  log={log}
+                  deleteClicked={() => {
+                    LogsApi.deleteLog(log._id);
+                    setLogs(logs.filter(existingLog => existingLog._id !== log._id));
+                  }}
+                />
+              )
+            )}
+          </Stack>
           )
           : <h4>You have no logs yet</h4>
         )
       }
       <Button onClick={() => setShowAddLog(true)}>ADD</Button>
-      
+
       {showAddLog &&
         <AddLogModal
           onDismiss={() => setShowAddLog(false)}
