@@ -1,6 +1,6 @@
 import {LogObject} from "../models/Log";
 import { Card } from "react-bootstrap";
-import styles from "./styles/util.module.css";
+import styles from "../styles/util.module.css";
 
 interface LogProps {
     log: LogObject,

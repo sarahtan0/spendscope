@@ -5,6 +5,7 @@ import Log from "./components/Log";
 import { Button, Spinner, Stack } from 'react-bootstrap';
 import * as LogsApi from "./networks/logs_api";
 import AddLogModal from "./components/AddEditLogModal";
+import styles from "./styles/util.module.css";
 
 function App() {
   const [logs, setLogs] = useState<LogObject[]>([]);
@@ -41,7 +42,7 @@ function App() {
 
       {!errorLoadingLogs && !loadingLogs && 
         (logs.length > 0 ? (
-          <Stack gap={3}>
+          <Stack className = {styles.flexCenter} gap={3}>
             {logs.map(log => (
                 <Log 
                   onLogClicked={(log) => setCurrentlyEditing(log)}
