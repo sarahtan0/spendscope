@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "envalid": "^8.0.0",
@@ -17,6 +18,7 @@
   "main": "index.js",
   "devDependencies": {
     "@eslint/js": "^9.29.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.1",
     "@types/http-errors": "^2.0.5",
