@@ -23,7 +23,7 @@ const Log = ({log, deleteClicked, onLogClicked} : LogProps) => {
     return(
         <Card style={{ width: '80vw' }} onClick={() => onLogClicked(log)}>
             <Card.Body>
-                <Card.Text className={styles.flexCenter}>
+                <div className={styles.flexCenter}>
                     <h5> {log.title} </h5>
                     <h5> {log.section} </h5>
                     <h5> ${log.cost} </h5>
@@ -33,7 +33,7 @@ const Log = ({log, deleteClicked, onLogClicked} : LogProps) => {
                             e.stopPropagation();
                         }}
                     > DELETE </button>
-                </Card.Text>
+                </div>
             </Card.Body>
             <Card.Footer>
                 <div>

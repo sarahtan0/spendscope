@@ -11,7 +11,14 @@ import MongoStore from "connect-mongo/build/main";
 const app = express();
 
 app.use(cors({
-    origin: ["http://localhost:3001", "https://spendscope-drab.vercel.app"],
+    origin: (origin, callback) => {
+        const allowedOrigins = ["http://localhost:3000", "https://spendscope-drab.vercel.app"];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, origin);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
 }))
 
@@ -25,6 +32,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: 60 * 60 * 1000,
+        sameSite: "none",
+        secure: true
     },
     rolling: true,
     store: MongoStore.create({
