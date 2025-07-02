@@ -4,6 +4,9 @@ import logsRoutes from "./routes/logs";
 import userRoutes from "./routes/users";
 import morgan from "morgan";
 import cors from "cors";
+import session from "express-session";
+import env from "./util/validateEnv";
+import MongoStore from "connect-mongo/build/main";
 
 const app = express();
 
@@ -15,6 +18,19 @@ app.use(cors({
 app.use(express.json());
 
 app.use(morgan("dev"));
+
+app.use(session({
+    secret: env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 60 * 60 * 1000,
+    },
+    rolling: true,
+    store: MongoStore.create({
+        mongoUrl: env.MONGO_CONNECTION_STRING
+    }),
+}))
 
 //middleware checking for /logs and then logsRoutes checks for path after that
 app.use("/logs", logsRoutes);
