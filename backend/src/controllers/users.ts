@@ -54,7 +54,7 @@ export const login: RequestHandler <unknown, unknown, LoginBody, unknown> =
 
             const user = await UserModel.findOne({username: username}).select("+password +email").exec();
             if (!user) throw createHttpError(400, "User does not exist");
-            const passwordMatch = bcrypt.compare(password, user.password);
+            const passwordMatch = await bcrypt.compare(password, user.password);
             if (!passwordMatch) throw createHttpError(400, "Incorrect password");
 
             req.session.userId = user._id;
