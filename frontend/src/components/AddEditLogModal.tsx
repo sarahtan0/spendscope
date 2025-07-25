@@ -4,6 +4,7 @@ import { LogObject } from "../models/Log";
 import { Controller, useForm } from "react-hook-form";
 import { LogInput } from "../networks/logs_api";
 import * as LogsApi from "../networks/logs_api"
+import TextInputField from "./form/TextInput";
 
 interface LogModalProps {
     onDismiss: () => void,
@@ -44,18 +45,14 @@ function AddLogModal({onDismiss, onLogSaved, logToEdit}: LogModalProps) {
             </Modal.Header>
             <Modal.Body>
                 <Form id="addLogForm" onSubmit={handleSubmit(onSubmit)}>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Title"
-                            isInvalid={!!errors.title}
-                            {...register("title", { required: "Required" })}
-                        />
-                        <Form.Control.Feedback type="invalid">
-                            {errors.title?.message}
-                        </Form.Control.Feedback>
-                    </Form.Group>
+                    <TextInputField
+                        label="Title"
+                        name="title"
+                        register={register}
+                        registerOptions={{required: "Required"}}
+                        error={errors.title}
+                        type="text"
+                    />
                     <Form.Group className="mb-3">
                         <Form.Label>Cost</Form.Label>
                         <div>
