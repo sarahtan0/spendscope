@@ -6,6 +6,7 @@ import { Button, Spinner, Stack } from 'react-bootstrap';
 import * as LogsApi from "./networks/logs_api";
 import AddLogModal from "./components/AddEditLogModal";
 import styles from "./styles/util.module.css";
+import NavBar from './components/NavBar';
 
 function App() {
   const [logs, setLogs] = useState<LogObject[]>([]);
@@ -13,6 +14,7 @@ function App() {
   const [currentlyEditing, setCurrentlyEditing] = useState<LogObject|null>(null);
   const [loadingLogs, setLoadingLogs] = useState(true);
   const [errorLoadingLogs, setErrorLoadingLogs] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     async function getLogs(){
@@ -37,6 +39,10 @@ function App() {
 
   return (
     <>
+      <NavBar
+        user="name"
+        loggedIn={loggedIn}
+      />
       {loadingLogs && <Spinner animation="border" role="status"/>}
       {errorLoadingLogs && <h2>Could not load your logs. Please try again</h2>}
 
