@@ -1,4 +1,5 @@
 import { LogObject } from "../models/Log";
+import { User } from "../models/User";
 
 const baseUrl = process.env.REACT_APP_BACKEND_URL ?? "http://localhost:2000"; // fallback for local dev
 
@@ -13,6 +14,11 @@ async function fetchData (input: RequestInfo, init?: RequestInit){
         const errorMessage = errorBody.error;
         throw Error(errorMessage);
     }
+}
+
+export async function getLoggedInUser(): Promise<User> {
+    const response = await fetchData("/users", {method: "GET"});
+    return response.json();
 }
 
 export async function getLogs():Promise<LogObject[]> {
