@@ -18,6 +18,16 @@ export const getAuthenticatedUser: RequestHandler = async (req: Request, res: Re
     }
 }
 
+export const logout: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+    req.session.destroy(error => {
+        if(error) {
+            next(error);
+        } else {
+            res.sendStatus(200);
+        }
+    })
+}
+
 interface createUserBody {
     email?: string,
     username?: string,
