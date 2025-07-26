@@ -48,7 +48,7 @@ export interface LoginCredentials {
 }
 
 export async function login(credentials: LoginCredentials): Promise<User> {
-    const response = await fetchData("users/login", {
+    const response = await fetchData("/users/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -60,7 +60,7 @@ export async function login(credentials: LoginCredentials): Promise<User> {
 }
 
 export async function logout() {
-    await fetchData("users/logout", {method: "POST"});
+    await fetchData("/users/logout", {method: "POST"});
 }
 
 export async function getLogs():Promise<LogObject[]> {

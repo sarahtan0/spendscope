@@ -8,6 +8,7 @@ import AddLogModal from "./components/AddEditLogModal";
 import styles from "./styles/util.module.css";
 import NavBar from './components/NavBar';
 import SignUpModal from "./components/SignUpModal";
+import LoginModal from './components/LoginModal';
 
 function App() {
   const [logs, setLogs] = useState<LogObject[]>([]);
@@ -46,9 +47,9 @@ function App() {
         loggedIn={loggedIn}
       />
       {showSignUp && 
-        <SignUpModal
+        <LoginModal
           onDismiss={() => setShowSignUp(false)}
-          onSignUpSuccessful={() => setLoggedIn(true)}
+          onLoginSuccessful={() => setLoggedIn(true)}
         />
       }
       {loadingLogs && <Spinner animation="border" role="status"/>}
