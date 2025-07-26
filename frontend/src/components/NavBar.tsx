@@ -1,30 +1,32 @@
-import { Button, Container, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
 import { User } from "../models/User";
+import NavBarLoggedIn from "./NavBarLoggedIn";
+import NavBarLoggedOutView from "./NavBarLoggedOut";
 
 interface NavbarProps {
-    user: string,
-    loggedIn: boolean,
+    user: User | null,
+    onSignUpClicked: () => void,
+    onLoginClicked: () => void,
+    onLogoutSuccessful: () => void,
 }
 
-const NavBar = ({user,loggedIn}: NavbarProps) => {
+const NavBar = ({user,onLoginClicked: onLoginSuccessful, onLogoutSuccessful, onSignUpClicked: onSignUpSuccessful}: NavbarProps) => {
     return(
         <>
-            {loggedIn ?
-                <Navbar>
-                    <Container>
-                        <Navbar.Brand>SpendScope</Navbar.Brand>
-                        <Navbar.Text>Signed in as: {user}</Navbar.Text>
-                    </Container>
-                </Navbar>
-            :
-                <Navbar>
-                    <Container>
-                        <Navbar.Brand>SpendScope</Navbar.Brand>
-                        <Button>Login</Button>
-                        <Button>Sign Up</Button>
-                    </Container>
-                </Navbar>
-            }
+            <Navbar>
+                <Container>
+                    <Navbar.Brand>SpendScope</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="main-navbar" />
+                    <Navbar.Collapse id="main-navbar">
+                        <Nav className = "ms-auto">
+                            {user 
+                            ? <NavBarLoggedIn user={user} onLogoutSuccessful={onLoginSuccessful}/>
+                            : <NavBarLoggedOutView onLoginClicked={onLoginSuccessful} onSignUpClicked={onSignUpSuccessful}/>
+                            }
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
         </>
     );
 }

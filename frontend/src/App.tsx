@@ -9,6 +9,7 @@ import styles from "./styles/util.module.css";
 import NavBar from './components/NavBar';
 import SignUpModal from "./components/SignUpModal";
 import LoginModal from './components/LoginModal';
+import { User } from './models/User';
 
 function App() {
   const [logs, setLogs] = useState<LogObject[]>([]);
@@ -16,10 +17,12 @@ function App() {
   const [currentlyEditing, setCurrentlyEditing] = useState<LogObject|null>(null);
   const [loadingLogs, setLoadingLogs] = useState(true);
   const [errorLoadingLogs, setErrorLoadingLogs] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(true);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [user, setUser] = useState<User|null>(null);
 
   useEffect(() => {
+
     async function getLogs(){
       try{
         setErrorLoadingLogs(false);
@@ -43,15 +46,24 @@ function App() {
   return (
     <>
       <NavBar
-        user="name"
-        loggedIn={loggedIn}
+        user={user}
+        onLoginClicked={() => {}}
+        onSignUpClicked={() => {}}
+        onLogoutSuccessful={() => {}}
       />
       {showSignUp && 
-        <LoginModal
-          onDismiss={() => setShowSignUp(false)}
-          onLoginSuccessful={() => setLoggedIn(true)}
+        <SignUpModal
+          onDismiss={() => {}}
+          onSignUpSuccessful={() => {}}
         />
       }
+      {showLogin && 
+        <LoginModal
+          onDismiss={() => {}}
+          onLoginSuccessful={() => {}}
+        />
+      }
+
       {loadingLogs && <Spinner animation="border" role="status"/>}
       {errorLoadingLogs && <h2>Could not load your logs. Please try again</h2>}
 

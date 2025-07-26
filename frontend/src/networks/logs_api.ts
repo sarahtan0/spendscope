@@ -17,7 +17,7 @@ async function fetchData (input: RequestInfo, init?: RequestInit){
 }
 
 export async function getLoggedInUser(): Promise<User> {
-    const response = await fetchData("/users", {
+    const response = await fetchData("/users/", {
         method: "GET",
         credentials: "include",
     });
