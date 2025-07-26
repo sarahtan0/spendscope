@@ -8,7 +8,6 @@ interface TextInputFieldProps {
     register: UseFormRegister<any>
     registerOptions?: RegisterOptions,
     error?: FieldError,
-    type?: string
     //any other variables
     [x: string]: any,
 }

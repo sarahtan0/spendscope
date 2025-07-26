@@ -7,6 +7,7 @@ import * as LogsApi from "./networks/logs_api";
 import AddLogModal from "./components/AddEditLogModal";
 import styles from "./styles/util.module.css";
 import NavBar from './components/NavBar';
+import SignUpModal from "./components/SignUpModal";
 
 function App() {
   const [logs, setLogs] = useState<LogObject[]>([]);
@@ -15,6 +16,7 @@ function App() {
   const [loadingLogs, setLoadingLogs] = useState(true);
   const [errorLoadingLogs, setErrorLoadingLogs] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(true);
 
   useEffect(() => {
     async function getLogs(){
@@ -43,6 +45,12 @@ function App() {
         user="name"
         loggedIn={loggedIn}
       />
+      {showSignUp && 
+        <SignUpModal
+          onDismiss={() => setShowSignUp(false)}
+          onSignUpSuccessful={() => setLoggedIn(true)}
+        />
+      }
       {loadingLogs && <Spinner animation="border" role="status"/>}
       {errorLoadingLogs && <h2>Could not load your logs. Please try again</h2>}
 

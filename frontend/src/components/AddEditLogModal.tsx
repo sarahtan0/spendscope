@@ -51,7 +51,6 @@ function AddLogModal({onDismiss, onLogSaved, logToEdit}: LogModalProps) {
                         register={register}
                         registerOptions={{required: "Required"}}
                         error={errors.title}
-                        type="text"
                     />
                     <Form.Group className="mb-3">
                         <Form.Label>Cost</Form.Label>
