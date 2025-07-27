@@ -20,7 +20,7 @@ const NavBar = ({user,onLoginClicked: onLoginSuccessful, onLogoutSuccessful, onS
                     <Navbar.Collapse id="main-navbar">
                         <Nav className = "ms-auto">
                             {user 
-                            ? <NavBarLoggedIn user={user} onLogoutSuccessful={onLoginSuccessful}/>
+                            ? <NavBarLoggedIn user={user} onLogoutSuccessful={onLogoutSuccessful}/>
                             : <NavBarLoggedOutView onLoginClicked={onLoginSuccessful} onSignUpClicked={onSignUpSuccessful}/>
                             }
                         </Nav>

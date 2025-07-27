@@ -1,4 +1,4 @@
-import { Button, Container, Navbar } from "react-bootstrap";
+import { Button, Navbar } from "react-bootstrap";
 import { User } from "../models/User";
 import * as LogsApi from "../networks/logs_api";
 
@@ -20,7 +20,6 @@ const NavBarLoggedIn = ({user, onLogoutSuccessful}: NavBarLoggedInProps) => {
 
     return(
         <Navbar>
-            <Navbar.Brand>SpendScope</Navbar.Brand>
             <Navbar.Text>Logged in as {user.username}</Navbar.Text>
             <Button onClick={logout}>Log Out</Button>
         </Navbar>
