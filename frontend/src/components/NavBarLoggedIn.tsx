@@ -21,7 +21,7 @@ const NavBarLoggedIn = ({user, onLogoutSuccessful}: NavBarLoggedInProps) => {
     return(
         <Navbar>
             <Navbar.Text>Logged in as {user.username}</Navbar.Text>
-            <Button onClick={logout}>Log Out</Button>
+            <Button onClick={() => {logout()}}>Log Out</Button>
         </Navbar>
     );
 }

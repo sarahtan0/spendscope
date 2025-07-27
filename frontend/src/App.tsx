@@ -6,6 +6,7 @@ import NavBar from './components/NavBar';
 import SignUpModal from "./components/SignUpModal";
 import { User } from './models/User';
 import * as LogsApi from "./networks/logs_api";
+import LogsPageLoggedOutView from './components/LogsPageLoggedOutView';
 
 function App() {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -52,8 +53,9 @@ function App() {
           }}
         />
       }
-      {user &&
-        <LogsPageLoggedInView/>
+      {user 
+      ? <LogsPageLoggedInView/>
+      : <LogsPageLoggedOutView/>
       }
       
 
