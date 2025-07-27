@@ -10,6 +10,7 @@ interface NavBarLoggedInProps {
 const NavBarLoggedIn = ({user, onLogoutSuccessful}: NavBarLoggedInProps) => {
     async function logout() {
         try{
+            console.log("logging out");
             await LogsApi.logout();
             onLogoutSuccessful();
         } catch (error) {

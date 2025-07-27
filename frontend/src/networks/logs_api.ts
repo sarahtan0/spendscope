@@ -60,7 +60,10 @@ export async function login(credentials: LoginCredentials): Promise<User> {
 }
 
 export async function logout() {
-    await fetchData("/users/logout", {method: "POST"});
+    await fetchData("/users/logout", {
+        method: "POST",
+        credentials: "include"
+    });
 }
 
 export async function getLogs():Promise<LogObject[]> {
