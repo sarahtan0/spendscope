@@ -7,6 +7,7 @@ import cors from "cors";
 import session from "express-session";
 import env from "./util/validateEnv";
 import MongoStore from "connect-mongo/build/main";
+import { requiresAuth } from "./middleware/auth";
 
 const app = express();
 
@@ -44,8 +45,8 @@ app.use(session({
 }))
 
 //middleware checking for /logs and then logsRoutes checks for path after that
-app.use("/logs", logsRoutes);
 app.use("/users", userRoutes);
+app.use("/logs", requiresAuth, logsRoutes);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(Error("Endpoint not found"));

@@ -2,10 +2,13 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import LogModel from "../models/log";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
+import { assertIsDefined } from "../util/assertIsDefined";
 
 export const getLogs: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+    const authenticatedUser = req.session.userId;
     try {
-        const logs = await LogModel.find().exec();
+        assertIsDefined(authenticatedUser);
+        const logs = await LogModel.find({userId : authenticatedUser}).exec();
         //turn logs into a json and return it with a good status
         res.status(200).json(logs);
     } catch (error) {
@@ -23,8 +26,13 @@ export const createLog: RequestHandler<unknown, unknown, CreateLogBody, unknown>
     const title = req.body.title;
     const cost = req.body.cost;
     const section = req.body.section;
+    const authenticatedUserId = req.session.userId;
+
     try {
+        assertIsDefined(authenticatedUserId);
+
         const newLog = await LogModel.create({
+            userId: authenticatedUserId,
             title: title,
             cost: cost,
             section: section,
@@ -38,10 +46,14 @@ export const createLog: RequestHandler<unknown, unknown, CreateLogBody, unknown>
 
 export const getLog: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     const logId = req.params.logId;
+    const authenticatedUserId = req.session.userId;
     try{
+        assertIsDefined(authenticatedUserId);
+
         if (!mongoose.isValidObjectId(logId)) throw createHttpError(400, "Invalid Log Id");
         const log = await LogModel.findById(logId).exec();
         if (!log) throw createHttpError(400, "Log not found");
+        if (!log.userId.equals(authenticatedUserId)) throw createHttpError(401, "You cannot access this log")
         res.status(200).json(log);
     } catch (error) {
         next(error);
@@ -78,11 +90,16 @@ export const updateLog: RequestHandler<UpdateLogParams, unknown, UpdateLogBody, 
     const newCost = req.body.cost;
     const newSection = req.body.section;
 
+    const authenticatedUserId = req.session.userId;
+
     try {
+        assertIsDefined(authenticatedUserId);
+
         if(!mongoose.isValidObjectId(logId)) throw createHttpError(400, "Invalid log id");
         if(!newTitle) throw createHttpError(400, "Note must have a title");
         const log = await LogModel.findById(logId).exec();
         if (!log) throw createHttpError(400, "Log not found");
+        if (!log.userId.equals(authenticatedUserId)) throw createHttpError(401, "You cannot access this log")
 
         log.title = newTitle;
         log.cost = newCost;
