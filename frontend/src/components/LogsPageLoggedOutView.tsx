@@ -1,8 +1,8 @@
 const LogsPageLoggedOutView = () => {
     return(
-        <>
-            <h1>Please log in to see your notes</h1>
-        </>
+        <div className={`h-[calc(100vh-15rem)] flex items-center justify-center`}>
+            <h1 className={`text-4xl font-bold`}>Please log in to see your notes</h1>
+        </div>
     )
 }
 
