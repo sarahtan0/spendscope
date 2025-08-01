@@ -36,10 +36,11 @@
     "typescript-eslint": "^8.35.0"
   },
   "scripts": {
-    "start": "npm run start --prefix ../frontend && nodemon src/index.ts",
+    "build:frontend": "npm install --prefix ../frontend && npm run build --prefix ../frontend",
+    "start": "npm run build:frontend && node dist/index.js" ,
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "tsc",
-    "build": "npm run build --prefix ../frontend && react-scripts build && npm install && tsc",
+    "build": "npm install && tsc",
     "dev": "ts-node src/index.ts"
   },
   "keywords": [],
