@@ -54,7 +54,7 @@ app.use("/logs", requiresAuth, logsRoutes);
 
 //use index.html for non-api routes
 app.get("{*any}", (req: Request, res: Response) => {
-    console.log("Serving frontend index.html for:", req.url);
+    console.log("FRONTEND URL:", req.url);
     res.sendFile(path.join(frontendPath, "index.html"));
 });
 
