@@ -53,11 +53,10 @@ app.use("/users", userRoutes);
 app.use("/logs", requiresAuth, logsRoutes);
 
 //use index.html for non-api routes
-app.get("/", (req: Request, res: Response) => {
-    console.log("frontend path: ", frontendPath);
-    res.sendFile(path.join(frontendPath, "/index.html"))
-    }
-);
+app.get("*", (req: Request, res: Response) => {
+    console.log("Serving frontend index.html for:", req.url);
+    res.sendFile(path.join(frontendPath, "index.html"));
+});
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(Error("Endpoint not found"));
