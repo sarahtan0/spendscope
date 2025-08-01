@@ -3,7 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import logsRoutes from "./routes/logs";
 import userRoutes from "./routes/users";
 import morgan from "morgan";
-import cors from "cors";
+// import cors from "cors";
 import session from "express-session";
 import env from "./util/validateEnv";
 import MongoStore from "connect-mongo/build/main";
@@ -14,18 +14,6 @@ const app = express();
 
 const frontendPath = path.resolve(__dirname, "../../frontend/build");
 app.use(express.static(frontendPath));
-
-app.use(cors({
-    origin: (origin, callback) => {
-        const allowedOrigins = ["http://localhost:3000", "https://spendscope-drab.vercel.app"];
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, origin);
-        } else {
-            callback(new Error("Not allowed by CORS"));
-        }
-    },
-    credentials: true,
-}))
 
 app.use(express.json());
 
@@ -39,8 +27,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: 60 * 60 * 1000,
-        // sameSite: "none",
-        // secure: true
+        sameSite: "lax",
+        secure: true
     },
     rolling: true,
     store: MongoStore.create({

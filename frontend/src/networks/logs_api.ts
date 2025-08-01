@@ -2,6 +2,7 @@ import { LogObject } from "../models/Log";
 import { User } from "../models/User";
 
 async function fetchData (input: RequestInfo, init?: RequestInit){
+    console.log("CALLING: ", input, init)
     const response = await fetch(input, init);
     if (response.ok){
         return response;
