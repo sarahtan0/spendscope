@@ -5,7 +5,6 @@ export const requiresAuth: RequestHandler = async (req: Request, res: Response, 
     if(req.session.userId){
         next();
     } else {
-        console.log("NO");
         next(createHttpError(401, "User not authenticated"));
     }
 }

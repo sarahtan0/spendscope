@@ -1,12 +1,8 @@
 import { LogObject } from "../models/Log";
 import { User } from "../models/User";
 
-const baseUrl = process.env.REACT_APP_BACKEND_URL ?? "http://localhost:2000"; // fallback for local dev
-
 async function fetchData (input: RequestInfo, init?: RequestInit){
-    const url: RequestInfo = baseUrl + input;
-    console.log(url);
-    const response = await fetch(url, init);
+    const response = await fetch(input, init);
     if (response.ok){
         return response;
     } else {

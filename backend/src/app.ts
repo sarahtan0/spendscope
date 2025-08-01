@@ -8,8 +8,12 @@ import session from "express-session";
 import env from "./util/validateEnv";
 import MongoStore from "connect-mongo/build/main";
 import { requiresAuth } from "./middleware/auth";
+import path from "path";
 
 const app = express();
+
+const frontendPath = path.resolve(__dirname, "../../frontend/build");
+app.use(express.static(frontendPath));
 
 app.use(cors({
     origin: (origin, callback) => {
@@ -47,6 +51,13 @@ app.use(session({
 //middleware checking for /logs and then logsRoutes checks for path after that
 app.use("/users", userRoutes);
 app.use("/logs", requiresAuth, logsRoutes);
+
+//use index.html for non-api routes
+app.get("/", (req: Request, res: Response) => {
+    console.log("frontend path: ", frontendPath);
+    res.sendFile(path.join(frontendPath, "/index.html"))
+    }
+);
 
 app.use((req: Request, res: Response, next: NextFunction) => {
     next(Error("Endpoint not found"));
