@@ -28,7 +28,7 @@ app.use(session({
     cookie: {
         maxAge: 60 * 60 * 1000,
         sameSite: "lax",
-        secure: true
+        // secure: true
     },
     rolling: true,
     store: MongoStore.create({

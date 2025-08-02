@@ -2,7 +2,7 @@ import { LogObject } from "../models/Log";
 import { User } from "../models/User";
 
 async function fetchData (input: RequestInfo, init?: RequestInit){
-    console.log("CALLING: ", input, init)
+    console.log(input, init)
     const response = await fetch(input, init);
     if (response.ok){
         return response;
@@ -11,6 +11,14 @@ async function fetchData (input: RequestInfo, init?: RequestInit){
         const errorMessage = errorBody.error;
         throw Error(errorMessage);
     }
+}
+
+export async function getMonthLogs(): Promise<LogObject[]> {
+    const response = await fetchData("/logs/monthAvg", {
+        method: "GET",
+        credentials: "include"
+    });
+    return response.json();
 }
 
 export async function getLoggedInUser(): Promise<User> {

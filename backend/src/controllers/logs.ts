@@ -3,6 +3,7 @@ import LogModel from "../models/log";
 import createHttpError from "http-errors";
 import mongoose from "mongoose";
 import { assertIsDefined } from "../util/assertIsDefined";
+import moment from "moment";
 
 export const getLogs: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     const authenticatedUser = req.session.userId;
@@ -12,6 +13,30 @@ export const getLogs: RequestHandler = async (req: Request, res: Response, next:
         //turn logs into a json and return it with a good status
         res.status(200).json(logs);
     } catch (error) {
+        next(error);
+    }
+}
+
+export const monthlySpending: RequestHandler = async(req: Request, res: Response, next: NextFunction) => {
+    const authenticatedUser = req.session.userId;
+    try {
+        assertIsDefined(authenticatedUser);
+        const startDate = moment().startOf('month').toDate();
+        const endDate = moment().endOf('month').toDate();
+        console.log(startDate, endDate);
+
+        //create a date using the current month and find the first and last day
+        const logs = await LogModel.find(
+            {
+                userId : authenticatedUser,
+                createdAt: {
+                    $gte: startDate,
+                    $lte: endDate
+                }
+            }).exec();
+        res.status(200).json(logs);
+
+    } catch(error) {
         next(error);
     }
 }
