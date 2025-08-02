@@ -8,6 +8,7 @@ import { User } from './models/User';
 import * as LogsApi from "./networks/logs_api";
 import LogsPageLoggedOutView from './components/LogsPageLoggedOutView';
 import Dashboard from './components/Dashboard';
+import { Card } from 'react-bootstrap';
 
 function App() {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -33,7 +34,7 @@ function App() {
         onLoginClicked={() => {setShowLogin(true)}}
         onSignUpClicked={() => {setShowSignUp(true)}}
         onLogoutSuccessful={() => {setUser(null)}}
-      />
+        />
       {showSignUp && 
         <SignUpModal
           onDismiss={() => {setShowSignUp(false)}}

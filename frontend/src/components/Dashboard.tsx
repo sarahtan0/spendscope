@@ -4,10 +4,10 @@ import * as LogsApi from "../networks/logs_api";
 import { Stack } from "react-bootstrap";
 import Log from "./Log";
 import styles from "../styles/util.module.css";
+import MonthAvgWidget from "./MonthAvgWidget";
 
 const Dashboard = () => {
     const [logs, setLogs] = useState<LogObject[]>([]);
-    const [avg, setAvg] = useState<number>(0);
     const [loadingLogs, setLoadingLogs] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
 
@@ -49,6 +49,13 @@ const Dashboard = () => {
                     )
                     : <h4>You have no logs yet</h4>
                 )
+            }
+            {!loadingLogs && !errorLoading && 
+                <div>
+                    <MonthAvgWidget
+                        logs={logs}
+                    />
+                </div>
             }
         </>
     );
