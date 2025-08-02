@@ -20,7 +20,7 @@ const MonthAvgWidget = ({logs} : AvgWidgetProps) => {
             <Card.Body>
               <div className={`h-full flex flex-col justify-between`}>
                 <h1 className="text-lg">Monthly Average</h1>
-                <p className={"font-bold text-4xl"}>{getAvg(logs)}</p>
+                <p className={"font-bold text-4xl"}>$ {getAvg(logs)}</p>
               </div>
             </Card.Body>
         </Card>
