@@ -1,6 +1,6 @@
 import { Card } from "react-bootstrap";
 import { LogObject } from "../../models/Log";
-import styles from "../styles/util.module.css";
+import styles from "../../styles/util.module.css";
 
 interface AvgWidgetProps {
     logs: LogObject[]
