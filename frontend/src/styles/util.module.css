@@ -1,5 +1,37 @@
+:root{
+    --dark: #31394C;
+}
+
 .flexCenter {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.widgetCard {
+    height: 100%;
+    border: 0cap;
+    border-radius: 24px;
+    overflow:hidden;
+}
+
+.widgetHead{
+    padding: 15px;
+    border-radius: 24px;
+    background-color: var(--dark);
+}
+
+.widgetHead > h1 {
+    color: white;
+}
+
+.line {
+    margin: 20px -20px 20px;
+}
+
+.gridLine {
+    margin-left: 1rem;
+    display: inline-grid;
+    grid-template-columns: 2fr 2fr 2fr 4fr;
+    width: 100%;
 }

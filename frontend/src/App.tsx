@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import LoginModal from './components/LoginModal';
-import LogsPageLoggedInView from './components/LogsPageLoggedInView';
 import NavBar from './components/NavBar';
 import SignUpModal from "./components/SignUpModal";
 import { User } from './models/User';

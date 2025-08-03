@@ -1,5 +1,6 @@
 import { Card } from "react-bootstrap";
-import { LogObject } from "../models/Log";
+import { LogObject } from "../../models/Log";
+import styles from "../styles/util.module.css";
 
 interface AvgWidgetProps {
     logs: LogObject[]
@@ -12,16 +13,17 @@ const MonthAvgWidget = ({logs} : AvgWidgetProps) => {
             sum += log.cost;
         });
         const average: number = sum/logs.length;
+        if (!average) return 0;
         return average.toFixed(2);
     }
 
     return(
-        <Card className={`w-3/12 h-60 border-0`}>
-            <Card.Body>
-              <div className={`h-full flex flex-col justify-between`}>
-                <h1 className="text-lg">Monthly Average</h1>
-                <p className={"font-bold text-4xl"}>$ {getAvg(logs)}</p>
-              </div>
+        <Card className={styles.widgetCard}>
+            <Card.Header className={styles.widgetHead}>
+                <h1 className="text-xl">Monthly Average</h1>
+            </Card.Header>
+            <Card.Body className="flex flex-col justify-end">
+                <h3 className={"font-bold text-5xl"}>$ {getAvg(logs)}</h3>
             </Card.Body>
         </Card>
     );
