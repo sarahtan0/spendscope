@@ -14,7 +14,7 @@ async function fetchData (input: RequestInfo, init?: RequestInit){
 }
 
 export async function getMonthLogs(): Promise<LogObject[]> {
-    const response = await fetchData("/logs/monthAvg", {
+    const response = await fetchData("/logs/currentMonth", {
         method: "GET",
         credentials: "include"
     });

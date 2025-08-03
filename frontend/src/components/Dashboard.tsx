@@ -4,6 +4,7 @@ import * as LogsApi from "../networks/logs_api";
 import { Card, Stack } from "react-bootstrap";
 import styles from "../styles/util.module.css";
 import MonthAvgWidget from "./widgets/MonthTotalWidget";
+import moment from "moment";
 
 const Dashboard = () => {
     const [monthLogs, setMonthLogs] = useState<LogObject[]>([]);
@@ -28,6 +29,14 @@ const Dashboard = () => {
         }
         getMonthlyLogs();
         }, [])
+
+    function convertTime(time: string) {
+        const momentObject = moment(time).local();
+        const formattedDate = momentObject.calendar();
+        // const formattedDate = momentObject.format('MMMM Do YYYY, h:mm:ss a');
+        return formattedDate;
+    }
+
     return(
         <div className="flex flex-col p-4 h-screen">
             <h1 className="ml-8 text-5xl font-bold">Dashboard</h1>
@@ -81,7 +90,7 @@ const Dashboard = () => {
                                                     <p>{log.title}</p>
                                                     <p>{log.cost}</p>
                                                     <p>{log.section}</p>
-                                                    <p>{log.createdAt}</p>
+                                                    <p>{convertTime(log.createdAt)}</p>
                                                 </div>
                                                 <hr className={styles.line}/>
                                             </>

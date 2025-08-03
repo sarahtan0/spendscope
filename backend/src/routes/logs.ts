@@ -6,7 +6,7 @@ const router = express.Router();
 //static routes
 router.get("/", LogsController.getLogs);
 router.post("/", LogsController.createLog);
-router.get("/monthAvg", LogsController.monthIntervalLogs);
+router.get("/currentMonth", LogsController.monthIntervalLogs);
 
 //dynamic routes
 router.get("/:logId", LogsController.getLog);

@@ -9,7 +9,7 @@ export const getLogs: RequestHandler = async (req: Request, res: Response, next:
     const authenticatedUser = req.session.userId;
     try {
         assertIsDefined(authenticatedUser);
-        const logs = await LogModel.find({userId : authenticatedUser}).exec();
+        const logs = await LogModel.find({userId : authenticatedUser}).sort({createdAt: -1}).exec();
         //turn logs into a json and return it with a good status
         res.status(200).json(logs);
     } catch (error) {
@@ -32,7 +32,7 @@ export const monthIntervalLogs: RequestHandler = async(req: Request, res: Respon
                     $gte: startDate,
                     $lte: endDate
                 }
-            }).exec();
+            }).sort({createdAt: -1}).exec();
         res.status(200).json(logs);
 
     } catch(error) {
