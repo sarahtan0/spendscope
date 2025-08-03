@@ -3,7 +3,7 @@ import { LogObject } from "../models/Log";
 import * as LogsApi from "../networks/logs_api";
 import { Card, Stack } from "react-bootstrap";
 import styles from "../styles/util.module.css";
-import MonthAvgWidget from "./widgets/MonthAvgWidget";
+import MonthAvgWidget from "./widgets/MonthTotalWidget";
 
 const Dashboard = () => {
     const [monthLogs, setMonthLogs] = useState<LogObject[]>([]);

@@ -6,21 +6,20 @@ interface AvgWidgetProps {
     logs: LogObject[]
 }
 
-const MonthAvgWidget = ({logs} : AvgWidgetProps) => {
+const MonthTotalWidget = ({logs} : AvgWidgetProps) => {
     function getAvg(logs: LogObject[]) {
         let sum: number = 0
         logs.forEach(log => {
             sum += log.cost;
         });
-        const average: number = sum/logs.length;
-        if (!average) return 0;
-        return average.toFixed(2);
+        if (!sum) return 0;
+        return sum.toFixed(2);
     }
 
     return(
         <Card className={styles.widgetCard}>
             <Card.Header className={styles.widgetHead}>
-                <h1 className="text-xl">Monthly Average</h1>
+                <h1 className="text-xl">Monthly Total</h1>
             </Card.Header>
             <Card.Body className="flex flex-col justify-end">
                 <h3 className={"font-bold text-5xl"}>$ {getAvg(logs)}</h3>
@@ -29,4 +28,4 @@ const MonthAvgWidget = ({logs} : AvgWidgetProps) => {
     );
 }
 
-export default MonthAvgWidget;
+export default MonthTotalWidget;
