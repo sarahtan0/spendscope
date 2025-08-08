@@ -84,7 +84,6 @@ function AddLogModal({onDismiss, onLogSaved, logToEdit}: LogModalProps) {
                             <option value="">Select a category</option>
                             <option value="Clothes">Clothes</option>
                             <option value="Food">Food</option>
-                            <option value="Groceries">Groceries</option>
                             <option value="Essentials">Essentials</option>
                             <option value="Miscellaneous">Miscellaneous</option>
                         </Form.Select>

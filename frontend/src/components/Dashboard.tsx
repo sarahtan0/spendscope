@@ -3,13 +3,40 @@ import { LogObject } from "../models/Log";
 import * as LogsApi from "../networks/logs_api";
 import { Card, Stack } from "react-bootstrap";
 import styles from "../styles/util.module.css";
-import MonthAvgWidget from "./widgets/MonthTotalWidget";
+import MonthTotalWidget from "./widgets/MonthTotalWidget";
 import moment from "moment";
+import SpendingCategoryWidget from "./widgets/SpendingCategoryWidget";
+import {Line} from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineController,
+    Tooltip,
+    Legend,
+    Filler,
+    Title
+  } from 'chart.js';
+
+ChartJS.register(
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineController,
+    Tooltip,
+    Legend,
+    Filler,
+    Title
+  );
 
 const Dashboard = () => {
     const [monthLogs, setMonthLogs] = useState<LogObject[]>([]);
     const [loadingLogs, setLoadingLogs] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
+    const [topThreeSections, setTopThreeSections] = useState<[string,number][]>([]);
 
     useEffect(() => {
         async function getMonthlyLogs() {
@@ -19,6 +46,24 @@ const Dashboard = () => {
                 const retrievedLogs = await LogsApi.getMonthLogs();
                 setMonthLogs(retrievedLogs);
                 setLoadingLogs(false);
+
+                let seenSections = new Set(["Clothes", "Essentials", "Miscellaneous", "Food"]);
+                let sortedSections: [string, number][] = [];
+                let totals: Record<string, number> = {};
+                retrievedLogs.forEach(log => 
+                    {
+                        if (log.section in seenSections) seenSections.delete(log.section);
+                        totals[log.section] = (totals[log.section] || 0) + log.cost;
+                    }
+                )
+                sortedSections = Object.entries(totals).sort(([,a],[,b]) => b-a).slice(0,3);
+
+                while(sortedSections.length < 3){
+                    const randSection = seenSections.values().next().value;
+                    sortedSections.push([randSection ?? "Other", 0])
+                }
+
+                setTopThreeSections(sortedSections)
             } catch(error) {
                 console.error(error);
                 alert(error);
@@ -28,7 +73,7 @@ const Dashboard = () => {
             }
         }
         getMonthlyLogs();
-        }, [])
+    }, [])
 
     function convertTime(time: string) {
         const momentObject = moment(time).local();
@@ -37,39 +82,82 @@ const Dashboard = () => {
         return formattedDate;
     }
 
+    function costPercentage(place: number, sections:[string, number][]){
+        let sum = 0;
+        sections.forEach(section => {
+            sum += section[1];
+        });
+        const percentage = (sections[place-1][1]/sum).toFixed(2);
+        return parseFloat(percentage)*100;
+    }
+
+    function monthsUntilNow(){
+        const currMonth = moment().format('MMMM');
+        let months: Array<string> = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let end = 0;
+        while (months[end] !== currMonth){
+            end += 1;
+        }
+        return months.slice(0, end+1);
+    }
+
     return(
         <div className="flex flex-col p-4 h-screen">
             <h1 className="ml-8 text-5xl font-bold">Dashboard</h1>
             <div className="w-full h-full flex justify-around">
                 <div className={"w-3/6 h-full flex flex-col gap-4 p-4"}>
-                    <MonthAvgWidget
+                    <MonthTotalWidget
                         logs={monthLogs}
                     />
 
-                    <Card className={styles.widgetCard}>
+                    <Card className={`h-3/4 ${styles.widgetCard}`}>
                         <Card.Header className={styles.widgetHead}>
-                            <h1 className="text-xl">Most Spent Section</h1>
+                            <h1 className="text-xl">Top Spending Categories</h1>
                         </Card.Header>
-                        <Card.Body>
-                            <div className={`h-full flex flex-col justify-end`}>
-                                <div>
-                                    <h3 className={"font-bold text-3xl"}>section</h3>
-                                    <h3 className={"font-bold text-5xl"}>$ Total</h3>
-                                </div>
-                            </div>
+                        <Card.Body className={`flex items-center justify-center`}>
+                            {topThreeSections.length >= 3 && 
+                            <>
+                                <SpendingCategoryWidget
+                                    color="red"
+                                    section="Clothes"
+                                    percentage={costPercentage(1, topThreeSections)}
+                                    cost={topThreeSections[0][1]}
+                                />
+                                <SpendingCategoryWidget
+                                    color="orange"
+                                    section="Essentials"
+                                    percentage={costPercentage(2, topThreeSections)}
+                                    cost={topThreeSections[1][1]}
+                                />
+                                <SpendingCategoryWidget
+                                    color="green"
+                                    section="Misc"
+                                    percentage={costPercentage(3, topThreeSections)}
+                                    cost={topThreeSections[2][1]}
+                                />
+                            </>
+                            }
                         </Card.Body>
                     </Card>
 
-                    <Card className={styles.widgetCard}>
+                    <Card className={`${styles.widgetCard} h-3/4`}>
                         <Card.Body>
-                            <div>
-                                GRAPH???
-                            </div>
+                            <Line
+                                data={{
+                                    labels: monthsUntilNow(),
+                                    datasets: [
+                                        {
+                                            label: "Total",
+                                            data: [0,0,0,0,0,53.2,0]
+                                        },
+                                    ]
+                                }}
+                            />
                         </Card.Body>
                     </Card>
                 </div>
                 <div className="p-4 w-9/12">
-                    <Card className={styles.widgetCard}>
+                    <Card className={`${styles.widgetCard} h-full`}>
                         <Card.Header className={styles.widgetHead}>
                             <h1 className="ml-4 text-xl">Logs</h1>
                         </Card.Header>
@@ -88,7 +176,7 @@ const Dashboard = () => {
                                             <>
                                                 <div className={styles.gridLine}>
                                                     <p>{log.title}</p>
-                                                    <p>{log.cost}</p>
+                                                    <p>${log.cost}</p>
                                                     <p>{log.section}</p>
                                                     <p>{convertTime(log.createdAt)}</p>
                                                 </div>
@@ -106,34 +194,6 @@ const Dashboard = () => {
 
             </div>
         </div>
-        // <>
-        //     {!loadingLogs && !errorLoading && 
-        //         (logs.length > 0 ? (
-        //             <Stack className = {styles.flexCenter} gap={3}>
-        //                 {logs.map(log => (
-        //                     <Log
-        //                     onLogClicked={() => {}}
-        //                     log={log}
-        //                     deleteClicked={() => {
-        //                         LogsApi.deleteLog(log._id);
-        //                         setLogs(logs.filter(existingLog => existingLog._id !== log._id));
-        //                     }}
-        //                     />
-        //                 )
-        //                 )}
-        //             </Stack>
-        //             )
-        //             : <h4>You have no logs yet</h4>
-        //         )
-        //     }
-        //     {!loadingLogs && !errorLoading && 
-        //         <div>
-        //             <MonthAvgWidget
-        //                 logs={logs}
-        //             />
-        //         </div>
-        //     }
-        // </>
     );
 }
 

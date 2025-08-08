@@ -9,7 +9,6 @@
 }
 
 .widgetCard {
-    height: 100%;
     border: 0cap;
     border-radius: 24px;
     overflow:hidden;
@@ -17,7 +16,6 @@
 
 .widgetHead{
     padding: 15px;
-    border-radius: 24px;
     background-color: var(--dark);
 }
 
@@ -34,4 +32,8 @@
     display: inline-grid;
     grid-template-columns: 2fr 2fr 2fr 4fr;
     width: 100%;
+}
+
+.dark {
+    background-color: var(--dark);
 }
