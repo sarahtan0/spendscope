@@ -32,7 +32,11 @@ ChartJS.register(
     Title
   );
 
-const Dashboard = () => {
+interface DashboardProps {
+    logs: LogObject[],
+}
+
+const Dashboard = ({logs}: DashboardProps) => {
     const [monthLogs, setMonthLogs] = useState<LogObject[]>([]);
     const [loadingLogs, setLoadingLogs] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
@@ -73,7 +77,7 @@ const Dashboard = () => {
             }
         }
         getMonthlyLogs();
-    }, [])
+    }, [logs])
 
     function convertTime(time: string) {
         const momentObject = moment(time).local();

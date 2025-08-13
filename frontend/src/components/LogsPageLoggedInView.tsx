@@ -35,7 +35,7 @@ const LogsPageLoggedInView = () => {
       }, [])
     
     return(
-        <>
+        <div className={`h-full`}>
         {loadingLogs && <Spinner animation="border" role="status"/>}
         {errorLoadingLogs && <h2>Could not load your logs. Please try again</h2>}
 
@@ -80,7 +80,7 @@ const LogsPageLoggedInView = () => {
                 logToEdit={currentlyEditing}
             />
         }
-        </>
+        </div>
     );
 }
 
