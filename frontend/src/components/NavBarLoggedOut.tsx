@@ -1,4 +1,5 @@
 import { Button} from "react-bootstrap";
+import styles from "../styles/util.module.css";
 
 interface NavBarLoggedOutViewProps {
     onLoginClicked: () => void,
@@ -10,12 +11,12 @@ const NavBarLoggedOutView = ({onLoginClicked: onLoginSuccessful, onSignUpClicked
         <div className={`flex-col justiy-between items-center flex h-full`}>
             <div className={`flex flex-col h-full`}>
                 <Button
-                    className={`mb-4 mt-4`}
+                    className={`${styles.navButton}`}
                     onClick={onSignUpSuccessful}>
                     Sign Up
                 </Button>
                 <Button
-                    className={`mb-4 mt-4`}
+                    className={`${styles.navButton}`}
                     onClick={onLoginSuccessful}>
                     Login
                 </Button>

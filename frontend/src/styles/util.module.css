@@ -37,3 +37,11 @@
 .dark {
     background-color: var(--dark);
 }
+
+.navButton{
+    margin-top: 1rem;
+    border-radius: 100%;
+    background-color: white;
+    aspect-ratio: 1/1;
+    color: var(--dark)
+}

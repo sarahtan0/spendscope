@@ -1,6 +1,7 @@
 import { Button, Navbar } from "react-bootstrap";
 import { User } from "../models/User";
 import * as LogsApi from "../networks/logs_api";
+import styles from "../styles/util.module.css";
 
 interface NavBarLoggedInProps {
     user: User,
@@ -23,10 +24,10 @@ const NavBarLoggedIn = ({user, onLogoutSuccessful, onAddClicked}: NavBarLoggedIn
     return(
         <Navbar className={`flex-col justiy-between items-center flex h-full`}>
             <div className={`flex flex-col h-full`}>
-                <Navbar.Text>{user.username}</Navbar.Text>
-                <Button onClick={() => {logout()}}>Log Out</Button>
+                <Navbar.Text className={`${styles.navButton} w-full mb-4`}>{user.username}</Navbar.Text>
+                <Button className={`${styles.navButton} w-full mb-4`} onClick={() => {logout()}}>Log Out</Button>
             </div>
-            <Button className={`rounded-full`} onClick={onAddClicked}>+</Button>
+            <Button className={`${styles.navButton} w-full mb-4`} onClick={onAddClicked}>+</Button>
         </Navbar>
     );
 }

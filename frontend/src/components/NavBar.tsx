@@ -2,6 +2,7 @@ import { Nav, Navbar } from "react-bootstrap";
 import { User } from "../models/User";
 import NavBarLoggedIn from "./NavBarLoggedIn";
 import NavBarLoggedOutView from "./NavBarLoggedOut";
+import styles from "../styles/util.module.css";
 
 interface NavbarProps {
     user: User | null,
@@ -13,7 +14,7 @@ interface NavbarProps {
 
 const NavBar = ({user,onLoginClicked: onLoginSuccessful, onLogoutSuccessful, onSignUpClicked: onSignUpSuccessful, onAddClicked}: NavbarProps) => {
     return(
-        <Navbar className={`flex flex-col bg-slate-500 w-40 rounded-3xl h-9/12`}>
+        <Navbar className={`${styles.dark} flex flex-col w-40 rounded-3xl h-9/12`}>
             <Navbar.Toggle aria-controls="main-navbar" />
             <Navbar.Collapse id="main-navbar" className={`h-full`}>
                 <Nav className = "ms-auto h-full">
