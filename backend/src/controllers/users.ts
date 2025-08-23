@@ -48,7 +48,7 @@ export const signUp: RequestHandler<unknown, unknown, createUserBody, unknown> =
         const newUser = await UserModel.create({
             email: email,
             username: username,
-            password: passwordHashed
+            password: passwordHashed,
         })
         req.session.userId = newUser._id;
         res.status(201).json(newUser);
