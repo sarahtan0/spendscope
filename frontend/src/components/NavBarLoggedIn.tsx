@@ -24,7 +24,7 @@ const NavBarLoggedIn = ({user, onLogoutSuccessful, onAddClicked}: NavBarLoggedIn
     return(
         <Navbar className={`flex-col justiy-between items-center flex h-full`}>
             <div className={`flex flex-col h-full`}>
-                <Navbar.Text className={`${styles.navButton} w-full mb-4`}>{user.username}</Navbar.Text>
+                <Button disabled className={`${styles.navButton} w-full mb-4`}>{user.username}</Button>
                 <Button className={`${styles.navButton} w-full mb-4`} onClick={() => {logout()}}>Log Out</Button>
             </div>
             <Button className={`${styles.navButton} w-full mb-4`} onClick={onAddClicked}>+</Button>
