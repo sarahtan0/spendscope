@@ -12,6 +12,15 @@ export const getAuthenticatedUser: RequestHandler = async (req: Request, res: Re
     }
 }
 
+export const getMonthTotals: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const monthTotals = await UserModel.findById(req.session.userId).select("monthTotals").exec();
+        res.status(200).json(monthTotals);
+    }catch(error){
+        next(error);
+    }
+}
+
 export const logout: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     req.session.destroy(error => {
         if(error) {

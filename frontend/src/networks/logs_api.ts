@@ -13,6 +13,17 @@ async function fetchData (input: RequestInfo, init?: RequestInit){
     }
 }
 
+export async function getMonthTotals(): Promise<number[]>{
+    const response = await fetchData("/users/month-totals", {
+        method: "GET",
+        credentials: "include"
+    });
+    const data = await response.json();
+    const currDate = new Date();
+    const currMonth = currDate.getMonth();
+    return data.monthTotals.slice(0,currMonth+1);
+}
+
 export async function getMonthLogs(): Promise<LogObject[]> {
     const response = await fetchData("/logs/currentMonth", {
         method: "GET",

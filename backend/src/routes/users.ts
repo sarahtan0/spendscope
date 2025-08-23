@@ -12,4 +12,6 @@ router.post("/login", UsersController.login);
 
 router.post("/logout", UsersController.logout)
 
+router.get("/month-totals", UsersController.getMonthTotals);
+
 export default router;

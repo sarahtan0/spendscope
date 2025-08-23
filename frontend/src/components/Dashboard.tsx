@@ -37,10 +37,17 @@ interface DashboardProps {
 }
 
 const Dashboard = ({logs}: DashboardProps) => {
+    type TwelveNumbers = [
+        number,number,number,number,
+        number,number,number,number,
+        number,number,number,number,
+    ];
+
     const [monthLogs, setMonthLogs] = useState<LogObject[]>([]);
     const [loadingLogs, setLoadingLogs] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
     const [topThreeSections, setTopThreeSections] = useState<[string,number][]>([]);
+    const [monthTotals, setMonthTotals] = useState<number[]>(new Array(12).fill(0) as TwelveNumbers);
 
     useEffect(() => {
         async function getMonthlyLogs() {
@@ -50,6 +57,8 @@ const Dashboard = ({logs}: DashboardProps) => {
                 const retrievedLogs = await LogsApi.getMonthLogs();
                 setMonthLogs(retrievedLogs);
                 setLoadingLogs(false);
+                const pastTotals: number[] = await LogsApi.getMonthTotals();
+                setMonthTotals(pastTotals);
 
                 let seenSections = new Set(["Clothes", "Essentials", "Miscellaneous", "Food"]);
                 let sortedSections: [string, number][] = [];
@@ -143,7 +152,6 @@ const Dashboard = ({logs}: DashboardProps) => {
                             }
                         </Card.Body>
                     </Card>
-
                     <Card className={`${styles.widgetCard} h-3/4`}>
                         <Card.Body>
                             <Line
@@ -152,7 +160,7 @@ const Dashboard = ({logs}: DashboardProps) => {
                                     datasets: [
                                         {
                                             label: "Total",
-                                            data: [0,0,0,0,0,53.2,0]
+                                            data: monthTotals
                                         },
                                     ]
                                 }}
