@@ -14,7 +14,7 @@ interface NavbarProps {
 
 const NavBar = ({user,onLoginClicked: onLoginSuccessful, onLogoutSuccessful, onSignUpClicked: onSignUpSuccessful, onAddClicked}: NavbarProps) => {
     return(
-        <Navbar className={`${styles.dark} flex flex-col w-40 rounded-3xl h-9/12`}>
+        <Navbar className={`${styles.dark} flex flex-col w-32 rounded-3xl h-full`}>
             <Navbar.Toggle aria-controls="main-navbar" />
             <Navbar.Collapse id="main-navbar" className={`h-full`}>
                 <Nav className = "ms-auto h-full">

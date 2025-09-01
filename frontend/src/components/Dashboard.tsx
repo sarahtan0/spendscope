@@ -115,7 +115,7 @@ const Dashboard = ({logs}: DashboardProps) => {
     }
 
     return(
-        <div className="flex flex-col p-4 h-screen">
+        <div className="flex flex-col p-4 w-full h-screen">
             <h1 className="ml-8 text-5xl font-bold">Dashboard</h1>
             <div className="w-full h-full flex justify-around">
                 <div className={"w-3/6 h-full flex flex-col gap-4 p-4"}>

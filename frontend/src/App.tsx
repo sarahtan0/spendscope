@@ -33,13 +33,6 @@ function App() {
 
   return (
     <div className={`flex flex-row h-screen p-4`}>
-      <NavBar
-        user={user}
-        onLoginClicked={() => {setShowLogin(true)}}
-        onSignUpClicked={() => {setShowSignUp(true)}}
-        onLogoutSuccessful={() => {setUser(null)}}
-        onAddClicked={() => {setShowAddLog(true)}}
-        />
       {showSignUp && 
         <SignUpModal
           onDismiss={() => {setShowSignUp(false)}}
@@ -60,12 +53,29 @@ function App() {
           }}
         />
       }
-      <div className={`w-full h-full`}>
+      <div className={`w-full h-full flex justify-center items-center`}>
         {user 
-        ? <Dashboard
-            logs = {logs}
+        ? 
+        <>
+          <NavBar
+            user={user}
+            onLoginClicked={() => {setShowLogin(true)}}
+            onSignUpClicked={() => {setShowSignUp(true)}}
+            onLogoutSuccessful={() => {setUser(null)}}
+            onAddClicked={() => {setShowAddLog(true)}}
           />
-        : <LogsPageLoggedOutView/>
+          <Dashboard
+              logs = {logs}
+            />
+        </>
+        : 
+            <LogsPageLoggedOutView
+            onLoginSuccessful={(user) => {
+              setShowLogin(false);
+              setUser(user);
+            }}
+            
+            />
         }
       </div>
       {showAddLog &&

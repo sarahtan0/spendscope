@@ -1,5 +1,8 @@
 import { Button} from "react-bootstrap";
 import styles from "../styles/util.module.css";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {  faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+
 
 interface NavBarLoggedOutViewProps {
     onLoginClicked: () => void,
@@ -15,10 +18,10 @@ const NavBarLoggedOutView = ({onLoginClicked: onLoginSuccessful, onSignUpClicked
                     onClick={onSignUpSuccessful}>
                     Sign Up
                 </Button>
-                <Button
+                <Button 
                     className={`${styles.navButton}`}
                     onClick={onLoginSuccessful}>
-                    Login
+                    <FontAwesomeIcon className={`fa-2x`}icon={faRightToBracket}/>
                 </Button>
             </div>
         </div>
