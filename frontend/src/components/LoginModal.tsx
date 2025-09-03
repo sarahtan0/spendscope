@@ -25,7 +25,8 @@ function LoginModal({onDismiss, onLoginSuccessful}: LoginProps){
     return(
         <Modal show onHide={onDismiss}>
             <Modal.Header closeButton>
-                <Modal.Title>Log In</Modal.Title>
+                <Modal.Title>SpendScope</Modal.Title>
+                <h2>Log In</h2>
             </Modal.Header>
             <Modal.Body>
                 <Form id="loginForm" onSubmit={handleSubmit(onSubmit)}>

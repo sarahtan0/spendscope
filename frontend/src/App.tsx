@@ -9,6 +9,7 @@ import LogsPageLoggedOutView from './components/LogsPageLoggedOutView';
 import Dashboard from './components/Dashboard';
 import AddLogModal from './components/AddEditLogModal';
 import { LogObject } from './models/Log';
+import moment from "moment";
 
 function App() {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -16,6 +17,7 @@ function App() {
   const [user, setUser] = useState<User|null>(null);
   const [showAddLog, setShowAddLog] = useState(false);
   const [logs, setLogs] = useState<LogObject[]>([]);
+
 
   useEffect(() => {
     async function getAuthenticatedUser() {
@@ -82,7 +84,7 @@ function App() {
             <AddLogModal
             onDismiss={() => setShowAddLog(false)}
             onLogSaved={(newLogs) => {
-                setLogs([...logs, newLogs])
+                setLogs([...logs, newLogs]);
                 setShowAddLog(false);
             }}
             logToEdit={null}

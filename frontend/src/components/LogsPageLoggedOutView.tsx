@@ -26,9 +26,6 @@ const LogsPageLoggedOutView = ({onLoginSuccessful}: LoginProps) => {
         }
     
     return(
-        // <div className={`h-full flex items-center justify-center`}>
-        //     <h1 className={`text-4xl font-bold`}>Please log in to see your notes</h1>
-        // </div> 
         <div className={`h-auto w-96 bg-white p-4 rounded-lg`}>
             <Modal.Title>Log In</Modal.Title>
                 <Form id="loginForm" onSubmit={handleSubmit(onSubmit)}>

@@ -24,7 +24,8 @@ function SignUpModal({onDismiss, onSignUpSuccessful}: SignUpProps) {
     return(
         <Modal show onHide={onDismiss}>
             <Modal.Header closeButton>
-                <Modal.Title>Sign Up</Modal.Title>
+                <Modal.Title>SpendScope</Modal.Title>
+                <h2>Sign Up</h2>
             </Modal.Header>
             <Modal.Body>
                 <Form id="signUpForm" onSubmit={handleSubmit(onSubmit)}>

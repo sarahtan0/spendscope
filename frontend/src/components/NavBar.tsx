@@ -1,7 +1,6 @@
 import { Nav, Navbar } from "react-bootstrap";
 import { User } from "../models/User";
 import NavBarLoggedIn from "./NavBarLoggedIn";
-import NavBarLoggedOutView from "./NavBarLoggedOut";
 import styles from "../styles/util.module.css";
 
 interface NavbarProps {
@@ -20,7 +19,7 @@ const NavBar = ({user,onLoginClicked: onLoginSuccessful, onLogoutSuccessful, onS
                 <Nav className = "ms-auto h-full">
                     {user 
                     ? <NavBarLoggedIn user={user} onLogoutSuccessful={onLogoutSuccessful} onAddClicked={onAddClicked}/>
-                    : <NavBarLoggedOutView onLoginClicked={onLoginSuccessful} onSignUpClicked={onSignUpSuccessful}/>
+                    : <></>
                     }
                 </Nav>
             </Navbar.Collapse>

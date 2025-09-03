@@ -87,6 +87,7 @@ export const login: RequestHandler <unknown, unknown, LoginBody, unknown> =
 
             req.session.userId = user._id;
             console.log("Session created", req.session);
+            
             res.status(201).json(user);
         }catch (error){
             next(error);

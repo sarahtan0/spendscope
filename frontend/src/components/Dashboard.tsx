@@ -7,30 +7,11 @@ import MonthTotalWidget from "./widgets/MonthTotalWidget";
 import moment from "moment";
 import SpendingCategoryWidget from "./widgets/SpendingCategoryWidget";
 import {Line} from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineController,
-    Tooltip,
-    Legend,
-    Filler,
-    Title
-  } from 'chart.js';
+import {Chart as ChartJS,LineElement,CategoryScale,LinearScale,PointElement,
+    LineController,Tooltip,Legend,Filler, Title} from 'chart.js';
 
-ChartJS.register(
-    LineElement,
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineController,
-    Tooltip,
-    Legend,
-    Filler,
-    Title
-  );
+ChartJS.register(LineElement,CategoryScale,LinearScale,PointElement,
+    LineController,Tooltip,Legend,Filler,Title);
 
 interface DashboardProps {
     logs: LogObject[],
@@ -96,6 +77,7 @@ const Dashboard = ({logs}: DashboardProps) => {
     }
 
     function costPercentage(place: number, sections:[string, number][]){
+        //calculates the percentage of the total with the place-th most spent category
         let sum = 0;
         sections.forEach(section => {
             sum += section[1];
@@ -132,19 +114,19 @@ const Dashboard = ({logs}: DashboardProps) => {
                             <>
                                 <SpendingCategoryWidget
                                     color="red"
-                                    section="Clothes"
+                                    section={topThreeSections[0][0]}
                                     percentage={costPercentage(1, topThreeSections)}
                                     cost={topThreeSections[0][1]}
                                 />
                                 <SpendingCategoryWidget
                                     color="orange"
-                                    section="Essentials"
+                                    section={topThreeSections[1][0]}
                                     percentage={costPercentage(2, topThreeSections)}
                                     cost={topThreeSections[1][1]}
                                 />
                                 <SpendingCategoryWidget
                                     color="green"
-                                    section="Misc"
+                                    section={topThreeSections[2][0]}
                                     percentage={costPercentage(3, topThreeSections)}
                                     cost={topThreeSections[2][1]}
                                 />
