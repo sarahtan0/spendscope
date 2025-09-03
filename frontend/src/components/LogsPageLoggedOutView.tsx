@@ -1,55 +1,47 @@
-import { useForm } from "react-hook-form";
 import { User } from "../models/User";
-import { LoginCredentials } from "../networks/logs_api";
-import * as LogsApi from "../networks/logs_api";
-import { Button, Form, Modal } from "react-bootstrap";
-import TextInputField from "./form/TextInput";
+import { useState } from "react";
+import LoginModal from "./LoginModal";
+import SignUpModal from "./SignUpModal";
 
 
 interface LoginProps {
-    onLoginSuccessful: (user: User) => void
+    onLoginSuccessful: (user: User) => void,
+    onSignupSuccessful: (user: User) => void,
 }
 
-const LogsPageLoggedOutView = ({onLoginSuccessful}: LoginProps) => {
-    const {register, handleSubmit, formState : {errors, isSubmitting}} = useForm<User>();
-
-
-    async function onSubmit(credentials: LoginCredentials){
-            try {
-                const response = await LogsApi.login(credentials);
-                onLoginSuccessful(response);
-            } catch (error) {
-                console.error(error);
-                alert(error);
-            }
-        }
+const LogsPageLoggedOutView = ({onLoginSuccessful, onSignupSuccessful}: LoginProps) => {
+    const [loginShow, setLoginShow] = useState(true);
+    const [signupShow, setSignupShow] = useState(false)
     
     return(
-        <div className={`h-auto w-96 bg-white p-4 rounded-lg`}>
-            <Modal.Title>Log In</Modal.Title>
-                <Form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
-                    <TextInputField
-                        label="Username"
-                        name="username"
-                        register={register}
-                        registerOptions={{required: "Required"}}
-                        error={errors.username}
-                    />
-                    <TextInputField
-                        label="Password"
-                        name="password"
-                        register={register}
-                        registerOptions={{required: "Required"}}
-                        error={errors.password}
-                    />
-                </Form>
-            <Button
-                type="submit"
-                form="loginForm"
-                disabled={isSubmitting}
-            > Submit
-            </Button>
-        </div>
+        <>
+            <div className={`h-3/4 w-1/2 bg-white p-4 rounded-3xl flex justify-center items-center`}>
+                <div className={`flex-col w-1/2 `}>
+                    {loginShow && 
+                        <LoginModal
+                            onLoginSuccessful={(user)=>{
+                                onLoginSuccessful(user)
+                            }}
+                            onSignUpClick={() => {
+                                setLoginShow(false);
+                                setSignupShow(true);
+                            }}
+                        />
+                    }
+                    {signupShow && 
+                        <SignUpModal
+                            onSignUpSuccessful={(user)=>{
+                                onSignupSuccessful(user)
+                            }}
+                            onLoginClicked={() => {
+                                setLoginShow(true);
+                                setSignupShow(false);
+                            }}
+                        />
+                    }
+                </div>
+            </div>
+        </>
     );
 }
 

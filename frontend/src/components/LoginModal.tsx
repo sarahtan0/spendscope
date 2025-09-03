@@ -6,11 +6,11 @@ import { Button, Form, Modal } from "react-bootstrap";
 import TextInputField from "./form/TextInput";
 
 interface LoginProps {
-    onDismiss: () => void,
-    onLoginSuccessful: (user: User) => void
+    onLoginSuccessful: (user: User) => void,
+    onSignUpClick: () => void
 }
 
-function LoginModal({onDismiss, onLoginSuccessful}: LoginProps){
+function LoginModal({onLoginSuccessful, onSignUpClick}: LoginProps){
     const {register, handleSubmit, formState : {errors, isSubmitting}} = useForm<User>();
     
     async function onSubmit(credentials: LoginCredentials){
@@ -23,39 +23,38 @@ function LoginModal({onDismiss, onLoginSuccessful}: LoginProps){
         }
     }
     return(
-        <Modal show onHide={onDismiss}>
-            <Modal.Header closeButton>
-                <Modal.Title>SpendScope</Modal.Title>
-                <h2>Log In</h2>
-            </Modal.Header>
-            <Modal.Body>
-                <Form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
-                    <TextInputField
-                        label="Username"
-                        name="username"
-                        register={register}
-                        registerOptions={{required: "Required"}}
-                        error={errors.username}
-                    />
-                    <TextInputField
-                        label="Password"
-                        name="password"
-                        register={register}
-                        registerOptions={{required: "Required"}}
-                        error={errors.password}
-                    />
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button
-                    type="submit"
-                    form="loginForm"
-                    disabled={isSubmitting}
-                > Submit
-                </Button>
-            </Modal.Footer>
+        <div>
+            <Modal.Title className={`text-center`}>Log In</Modal.Title>
+            <Form id="loginForm" onSubmit={handleSubmit(onSubmit)}>
+                <TextInputField
+                    label="Username"
+                    name="username"
+                    register={register}
+                    registerOptions={{required: "Required"}}
+                    error={errors.username}
+                    type="text"
+                />
+                <TextInputField
+                    label="Password"
+                    name="password"
+                    register={register}
+                    registerOptions={{required: "Required"}}
+                    error={errors.password}
+                    type="password"
+                />
+            </Form>
+            <p className={`text-center`}>
+                Don't have an account?{' '}
+                <button className={`bg-transparent text-blue-500`}onClick={onSignUpClick}>Sign up here</button>
+            </p>
+            <Button className={`w-full mt-2`}
+                type="submit"
+                form="loginForm"
+                disabled={isSubmitting}
+            > Submit
+            </Button>
+        </div>
             
-        </Modal>
     );
 }
 

@@ -8,6 +8,7 @@ interface TextInputFieldProps {
     register: UseFormRegister<any>
     registerOptions?: RegisterOptions,
     error?: FieldError,
+    type: string,
     //any other variables
     [x: string]: any,
 }
@@ -21,6 +22,7 @@ const TextInputField = ({type, label, name, register, registerOptions, error, ..
                 placeholder={label}
                 {...register(name, registerOptions)}
                 isInvalid={!!error}
+                type={type}
             />
             <Form.Control.Feedback type="invalid">
                 {error?.message}

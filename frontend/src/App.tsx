@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import LoginModal from './components/LoginModal';
 import NavBar from './components/NavBar';
-import SignUpModal from "./components/SignUpModal";
 import { User } from './models/User';
 import * as LogsApi from "./networks/logs_api";
 import LogsPageLoggedOutView from './components/LogsPageLoggedOutView';
@@ -34,30 +32,10 @@ function App() {
 
   return (
     <div className={`flex flex-row h-screen p-4`}>
-      {showSignUp && 
-        <SignUpModal
-          onDismiss={() => {setShowSignUp(false)}}
-          onSignUpSuccessful={(user) => {
-            setShowSignUp(false);
-            setUser(user);
-          }}
-        />
-      }
-      {showLogin && 
-        <LoginModal
-          onDismiss={() => {
-            setShowLogin(false);
-          }}
-          onLoginSuccessful={(user) => {
-            setShowLogin(false);
-            setUser(user);
-          }}
-        />
-      }
       <div className={`w-full h-full flex justify-center items-center`}>
         {user 
         ? 
-        <>
+          <>
           <NavBar
             user={user}
             onLoginClicked={() => {setShowLogin(true)}}
@@ -68,15 +46,17 @@ function App() {
           <Dashboard
               logs = {logs}
             />
-        </>
+          </>
         : 
-            <LogsPageLoggedOutView
-            onLoginSuccessful={(user) => {
-              setShowLogin(false);
-              setUser(user);
-            }}
-            
-            />
+          <LogsPageLoggedOutView
+          onLoginSuccessful={(user) => {
+            setUser(user);
+          }}
+          onSignupSuccessful={(user)=>{
+            setUser(user);
+            console.log("user: ", user);
+          }}
+          />
         }
       </div>
       {showAddLog &&
