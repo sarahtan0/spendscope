@@ -4,7 +4,6 @@ import { LoginCredentials } from "../networks/logs_api";
 import * as LogsApi from "../networks/logs_api";
 import { Button, Form, Modal } from "react-bootstrap";
 import TextInputField from "./form/TextInput";
-import styles from "../styles/util.module.css";
 
 
 interface LoginProps {

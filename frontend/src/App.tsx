@@ -9,7 +9,6 @@ import LogsPageLoggedOutView from './components/LogsPageLoggedOutView';
 import Dashboard from './components/Dashboard';
 import AddLogModal from './components/AddEditLogModal';
 import { LogObject } from './models/Log';
-import moment from "moment";
 
 function App() {
   const [showSignUp, setShowSignUp] = useState(false);
