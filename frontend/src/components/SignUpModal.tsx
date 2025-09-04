@@ -50,16 +50,16 @@ function SignUpModal({onSignUpSuccessful, onLoginClicked}: SignUpProps) {
                     type="password"
                 />
             </Form>
-            <p className={`text-center`}>
-                Already have an account?{' '}
-                <button className={`bg-transparent text-blue-500`}onClick={onLoginClicked}>Log in here</button>
-            </p>
-            <Button className={`w-full mt-2`}
+            <Button className={`w-full mt-3`}
                 type="submit"
                 form="signUpForm"
                 disabled={isSubmitting}
             > Submit
             </Button>
+            <p className={`text-center mt-3`}>
+                Already have an account?{' '}
+                <button className={`bg-transparent text-blue-500`}onClick={onLoginClicked}>Log in here</button>
+            </p>
         </div>
     );
 }
