@@ -15,8 +15,8 @@ const LogsPageLoggedOutView = ({onLoginSuccessful, onSignupSuccessful}: LoginPro
     
     return(
         <>
-            <div className={`h-3/4 w-1/2 bg-white p-4 rounded-3xl flex justify-center items-center`}>
-                <div className={`flex-col w-1/2 `}>
+            <div className={`h-3/4 w-full md:w-1/2 bg-transparent flex justify-center items-center`}>
+                <div className={`flex-col sm:w-1/2 w-10/12 `}>
                     {loginShow && 
                         <LoginModal
                             onLoginSuccessful={(user)=>{

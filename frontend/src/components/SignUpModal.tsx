@@ -22,8 +22,8 @@ function SignUpModal({onSignUpSuccessful, onLoginClicked}: SignUpProps) {
         }
     }
     return(
-        <div>
-            <Modal.Title className={`text-center`}>Sign Up</Modal.Title>
+        <div >
+            <Modal.Title className={`text-center`}>SpendScope</Modal.Title>
             <Form id="signUpForm" onSubmit={handleSubmit(onSubmit)}>
                 <TextInputField
                     label="Username"
