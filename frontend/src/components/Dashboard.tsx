@@ -4,7 +4,6 @@ import * as LogsApi from "../networks/logs_api";
 import {Card, Stack } from "react-bootstrap";
 import styles from "../styles/util.module.css";
 import MonthTotalWidget from "./widgets/MonthTotalWidget";
-import moment from "moment";
 import SpendingCategoryWidget from "./widgets/SpendingCategoryWidget";
 import {Line} from 'react-chartjs-2';
 import {Chart as ChartJS,LineElement,CategoryScale,LinearScale,PointElement,
@@ -77,13 +76,6 @@ const Dashboard = ({logs}: DashboardProps) => {
         getMonthlyLogs();
     }, [logs])
 
-    // function convertTime(time: string) {
-    //     const momentObject = moment(time).local();
-    //     const formattedDate = momentObject.calendar();
-    //     // const formattedDate = momentObject.format('MMMM Do YYYY, h:mm:ss a');
-    //     return formattedDate;
-    // }
-
     function costPercentage(place: number, sections:[string, number][]){
         //calculates the percentage of the total with the place-th most spent category
         let sum = 0;
@@ -93,17 +85,7 @@ const Dashboard = ({logs}: DashboardProps) => {
         const percentage = (sections[place-1][1]/sum).toFixed(2);
         return parseFloat(percentage)*100;
     }
-
-    // function monthsUntilNow(){
-    //     const currMonth = moment().format('MMMM');
-    //     let months: Array<string> = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    //     let end = 0;
-    //     while (months[end] !== currMonth){
-    //         end += 1;
-    //     }
-    //     return months.slice(0, end+1);
-    // }
-
+    
     return(
         <div className="flex flex-col p-4 w-full h-screen">
             <h1 className="ml-8 text-5xl font-bold">Dashboard</h1>
@@ -175,47 +157,38 @@ const Dashboard = ({logs}: DashboardProps) => {
                                 (monthLogs.length > 0 ? (
                                     <Stack>
                                         {monthLogs.map(log => (
-                                            <Log
-                                            onLogClicked={(log) => setCurrentlyEditing(log)}
-                                            log={log}
-                                            deleteClicked={async(deletedLog) => {
-                                                LogsApi.deleteLog(log._id);
-                                                const logMonthIndex = new Date(deletedLog.createdAt).getMonth();
-                                                console.log(monthLogs);
-                                                console.log("removing log", deletedLog._id);
-                                                setMonthLogs(monthLogs.filter(existingLog => (
-                                                    existingLog._id !== deletedLog._id && logMonthIndex === currMonthIndex)
-                                                ));
-                                                console.log(monthLogs);
+                                            <>
+                                                <Log
+                                                onLogClicked={(log) => setCurrentlyEditing(log)}
+                                                log={log}
+                                                deleteClicked={async(deletedLog) => {
+                                                    LogsApi.deleteLog(log._id);
+                                                    const logMonthIndex = new Date(deletedLog.createdAt).getMonth();
 
-                                                let updatedMonthTotals = [...monthTotals];
-                                                const newTotal = updatedMonthTotals[currMonthIndex] - deletedLog.cost;
-                                                updatedMonthTotals[currMonthIndex] = newTotal;
-                                                setMonthTotals(updatedMonthTotals);
+                                                    setMonthLogs(monthLogs.filter(existingLog => (
+                                                        existingLog._id !== deletedLog._id && logMonthIndex === currMonthIndex)
+                                                    ));
 
-                                                try{
-                                                    console.log("updating ", log?._id);
-                                                    await LogsApi.modifyMonthTotals({
-                                                        userId: log?._id,
-                                                        monthIndex: currMonthIndex, 
-                                                        newValue: newTotal
-                                                    });
-                                                } catch(error){
-                                                    console.error(error);
-                                                    alert(error);
-                                                }
-                                            }}
-                                            />
-                                            // <>
-                                            //     <div className={styles.gridLine}>
-                                            //         <p>{log.title}</p>
-                                            //         <p>${log.cost}</p>
-                                            //         <p>{log.section === "Miscellaneous" ? "Misc" : log.section}</p>
-                                            //         <p>{convertTime(log.createdAt)}</p>
-                                            //         <Button>Delete</Button>
-                                            //     </div>
-                                            //     <hr className={styles.line}/>
-                                            // </>
+                                                    let updatedMonthTotals = [...monthTotals];
+                                                    const newTotal = updatedMonthTotals[currMonthIndex] - deletedLog.cost;
+                                                    updatedMonthTotals[currMonthIndex] = newTotal;
+                                                    setMonthTotals(updatedMonthTotals);
+
+                                                    try{
+                                                        console.log("deleting ", log?._id);
+                                                        await LogsApi.modifyMonthTotals({
+                                                            userId: log?.userId,
+                                                            monthIndex: currMonthIndex, 
+                                                            newValue: newTotal
+                                                        });
+                                                    } catch(error){
+                                                        console.error(error);
+                                                        alert(error);
+                                                    }
+                                                }}
+                                                />
+                                                <hr className={styles.line}/>
+                                            </>
                                         ))}
                                     </Stack>
                                     )
@@ -229,15 +202,26 @@ const Dashboard = ({logs}: DashboardProps) => {
                 {currentlyEditing && 
                     <AddLogModal
                         onDismiss={() => setCurrentlyEditing(null)}
-                        onLogSaved={(updatedLog) => {
+                        onLogSaved={async(updatedLog) => {
                             setCurrentlyEditing(null);
-                            setMonthLogs(logs.map(currentLog =>currentLog._id === updatedLog._id ? updatedLog : currentLog));
+                            setMonthLogs(monthLogs.map(currentLog =>currentLog._id === updatedLog._id ? updatedLog : currentLog));
                             
-                            const difference = updatedLog.cost - currentlyEditing?.cost || 0;
                             const updatedMonthTotals = [...monthTotals];
-                            updatedMonthTotals[currMonthIndex] += difference;
-                            console.log("Month", currMonthIndex, "value: ", updatedMonthTotals[currMonthIndex]);
+                            const newTotal = updatedMonthTotals[currMonthIndex] + (updatedLog.cost - currentlyEditing?.cost || 0);
+
+                            updatedMonthTotals[currMonthIndex] = newTotal;
                             setMonthTotals(updatedMonthTotals);
+
+                            try{
+                                await LogsApi.modifyMonthTotals({
+                                    userId: updatedLog.userId,
+                                    monthIndex: currMonthIndex, 
+                                    newValue: newTotal
+                                });
+                            }catch(error){
+                                console.error(error);
+                                alert(error);
+                            }
                         }}
                         logToEdit={currentlyEditing}
                     />
