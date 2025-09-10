@@ -26,7 +26,6 @@ function AddLogModal({onDismiss, onLogSaved, logToEdit}: LogModalProps) {
         try{
             let logResponse: LogObject;
             if(logToEdit){
-                console.log(input);
                 logResponse = await LogsApi.updateLog(logToEdit._id, input);
             } else {
                 logResponse = await LogsApi.createLog(input);

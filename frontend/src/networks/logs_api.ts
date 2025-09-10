@@ -1,6 +1,7 @@
 import { LogObject } from "../models/Log";
 import { User } from "../models/User";
 
+
 async function fetchData (input: RequestInfo, init?: RequestInit){
     const response = await fetch(input, init);
     if (response.ok){
@@ -10,6 +11,24 @@ async function fetchData (input: RequestInfo, init?: RequestInit){
         const errorMessage = errorBody.error;
         throw Error(errorMessage);
     }
+}
+
+interface modifyCredentails {
+    userId: string,
+    monthIndex: number,
+    newValue?: number
+}
+
+export async function modifyMonthTotals(credentials: modifyCredentails): Promise<User>{
+    const response = await fetchData("/users/modify-month-totals", {
+        method: "PATCH", 
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(credentials)
+    })
+    return response.json();
 }
 
 export async function getMonthTotals(): Promise<number[]>{

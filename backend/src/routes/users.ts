@@ -14,4 +14,6 @@ router.post("/logout", UsersController.logout)
 
 router.get("/month-totals", UsersController.getMonthTotals);
 
+router.patch("/modify-month-totals", UsersController.modifyTotal);
+
 export default router;

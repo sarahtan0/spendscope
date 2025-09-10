@@ -2,6 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
+import {ObjectId} from 'mongodb';
 
 export const getAuthenticatedUser: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -65,6 +66,28 @@ export const signUp: RequestHandler<unknown, unknown, createUserBody, unknown> =
         next(error)
     }
 }
+
+interface modifyTotalBody {
+    userId: ObjectId,
+    monthIndex: number,
+    newValue?: number
+}
+
+export const modifyTotal: RequestHandler <unknown, unknown, modifyTotalBody, unknown> = 
+    async(req: Request<unknown, unknown, modifyTotalBody, unknown>, res: Response, next: NextFunction) => {
+        const userId = req.body.userId;
+        const monthIndex = req.body.monthIndex;
+        const newValue = req.body.newValue;
+        try{
+            const newUser = await UserModel.findOneAndUpdate({_id: userId},
+                {$set:{[`monthTotals.${monthIndex}`]:newValue}},
+                {upsert: true, new: true}
+            )
+            res.status(200).json(newUser);
+        } catch(error){
+            next(error);
+        }
+    }
 
 interface LoginBody {
     username?: string,

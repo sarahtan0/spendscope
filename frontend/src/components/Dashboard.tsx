@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { LogObject } from "../models/Log";
 import * as LogsApi from "../networks/logs_api";
-import { Card, Stack } from "react-bootstrap";
+import {Card, Stack } from "react-bootstrap";
 import styles from "../styles/util.module.css";
 import MonthTotalWidget from "./widgets/MonthTotalWidget";
 import moment from "moment";
@@ -9,6 +9,8 @@ import SpendingCategoryWidget from "./widgets/SpendingCategoryWidget";
 import {Line} from 'react-chartjs-2';
 import {Chart as ChartJS,LineElement,CategoryScale,LinearScale,PointElement,
     LineController,Tooltip,Legend,Filler, Title} from 'chart.js';
+import Log from "./Log";
+import AddLogModal from "./AddEditLogModal";
 
 ChartJS.register(LineElement,CategoryScale,LinearScale,PointElement,
     LineController,Tooltip,Legend,Filler,Title);
@@ -29,6 +31,12 @@ const Dashboard = ({logs}: DashboardProps) => {
     const [errorLoading, setErrorLoading] = useState(false);
     const [topThreeSections, setTopThreeSections] = useState<[string,number][]>([]);
     const [monthTotals, setMonthTotals] = useState<number[]>(new Array(12).fill(0) as TwelveNumbers);
+    const [currentlyEditing, setCurrentlyEditing] = useState<LogObject|null>(null);
+
+    const currMonthIndex = new Date().getMonth();
+    const months: Array<string> = ["January", "February", "March", "April", "May", 
+        "June", "July", "August", "September", "October", "November", "December"];
+
 
     useEffect(() => {
         async function getMonthlyLogs() {
@@ -69,12 +77,12 @@ const Dashboard = ({logs}: DashboardProps) => {
         getMonthlyLogs();
     }, [logs])
 
-    function convertTime(time: string) {
-        const momentObject = moment(time).local();
-        const formattedDate = momentObject.calendar();
-        // const formattedDate = momentObject.format('MMMM Do YYYY, h:mm:ss a');
-        return formattedDate;
-    }
+    // function convertTime(time: string) {
+    //     const momentObject = moment(time).local();
+    //     const formattedDate = momentObject.calendar();
+    //     // const formattedDate = momentObject.format('MMMM Do YYYY, h:mm:ss a');
+    //     return formattedDate;
+    // }
 
     function costPercentage(place: number, sections:[string, number][]){
         //calculates the percentage of the total with the place-th most spent category
@@ -86,15 +94,15 @@ const Dashboard = ({logs}: DashboardProps) => {
         return parseFloat(percentage)*100;
     }
 
-    function monthsUntilNow(){
-        const currMonth = moment().format('MMMM');
-        let months: Array<string> = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        let end = 0;
-        while (months[end] !== currMonth){
-            end += 1;
-        }
-        return months.slice(0, end+1);
-    }
+    // function monthsUntilNow(){
+    //     const currMonth = moment().format('MMMM');
+    //     let months: Array<string> = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    //     let end = 0;
+    //     while (months[end] !== currMonth){
+    //         end += 1;
+    //     }
+    //     return months.slice(0, end+1);
+    // }
 
     return(
         <div className="flex flex-col p-4 w-full h-screen">
@@ -138,7 +146,7 @@ const Dashboard = ({logs}: DashboardProps) => {
                         <Card.Body>
                             <Line
                                 data={{
-                                    labels: monthsUntilNow(),
+                                    labels: months.slice(0,currMonthIndex+1),
                                     datasets: [
                                         {
                                             label: "Total",
@@ -167,15 +175,28 @@ const Dashboard = ({logs}: DashboardProps) => {
                                 (monthLogs.length > 0 ? (
                                     <Stack>
                                         {monthLogs.map(log => (
-                                            <>
-                                                <div className={styles.gridLine}>
-                                                    <p>{log.title}</p>
-                                                    <p>${log.cost}</p>
-                                                    <p>{log.section}</p>
-                                                    <p>{convertTime(log.createdAt)}</p>
-                                                </div>
-                                                <hr className={styles.line}/>
-                                            </>
+                                            <Log
+                                            onLogClicked={(log) => setCurrentlyEditing(log)}
+                                            log={log}
+                                            deleteClicked={(deletedLog) => {
+                                                LogsApi.deleteLog(log._id);
+                                                setMonthLogs(logs.filter(existingLog => existingLog._id !== log._id));
+
+                                                let updatedMonthTotals = {...monthTotals};
+                                                updatedMonthTotals[currMonthIndex] -= deletedLog.cost;
+                                                setMonthTotals(updatedMonthTotals);
+                                            }}
+                                            />
+                                            // <>
+                                            //     <div className={styles.gridLine}>
+                                            //         <p>{log.title}</p>
+                                            //         <p>${log.cost}</p>
+                                            //         <p>{log.section === "Miscellaneous" ? "Misc" : log.section}</p>
+                                            //         <p>{convertTime(log.createdAt)}</p>
+                                            //         <Button>Delete</Button>
+                                            //     </div>
+                                            //     <hr className={styles.line}/>
+                                            // </>
                                         ))}
                                     </Stack>
                                     )
@@ -185,6 +206,23 @@ const Dashboard = ({logs}: DashboardProps) => {
                         </Card.Body>
                     </Card>
                 </div>
+
+                {currentlyEditing && 
+                    <AddLogModal
+                        onDismiss={() => setCurrentlyEditing(null)}
+                        onLogSaved={(updatedLog) => {
+                            setCurrentlyEditing(null);
+                            setMonthLogs(logs.map(currentLog =>currentLog._id === updatedLog._id ? updatedLog : currentLog));
+                            
+                            const difference = updatedLog.cost - currentlyEditing?.cost || 0;
+                            const updatedMonthTotals = {...monthTotals};
+                            updatedMonthTotals[currMonthIndex] += difference;
+                            console.log("Month", currMonthIndex, "value: ", updatedMonthTotals[currMonthIndex]);
+                            setMonthTotals(updatedMonthTotals);
+                        }}
+                        logToEdit={currentlyEditing}
+                    />
+                }
 
             </div>
         </div>

@@ -1,6 +1,6 @@
 import {LogObject} from "../models/Log";
-import { Card } from "react-bootstrap";
 import styles from "../styles/util.module.css";
+import moment from "moment";
 
 interface LogProps {
     log: LogObject,
@@ -19,28 +19,30 @@ export function formatDate(dateString: string): string {
     });
 }
 
+
+
 const Log = ({log, deleteClicked, onLogClicked} : LogProps) => {
+
+    function convertTime(time: string) {
+            const momentObject = moment(time).local();
+            const formattedDate = momentObject.calendar();
+            // const formattedDate = momentObject.format('MMMM Do YYYY, h:mm:ss a');
+            return formattedDate;
+        }
+
     return(
-        <Card style={{ width: '80vw' }} onClick={() => onLogClicked(log)}>
-            <Card.Body>
-                <div className={styles.flexCenter}>
-                    <h5> {log.title} </h5>
-                    <h5> {log.section} </h5>
-                    <h5> ${log.cost} </h5>
-                    <button
-                        onClick={(e) => {
-                            deleteClicked(log);
-                            e.stopPropagation();
-                        }}
-                    > DELETE </button>
-                </div>
-            </Card.Body>
-            <Card.Footer>
-                <div>
-                    Updated: {formatDate(log.updatedAt)}
-                </div>
-            </Card.Footer>
-        </Card>
+        <div className={styles.gridLine} onClick={() => onLogClicked(log)}>
+            <h5> {log.title} </h5>
+            <h5> {log.section === "Miscellaneous" ? "Misc" : log.section} </h5>
+            <h5> ${log.cost} </h5>
+            <h5> {convertTime(log.createdAt)} </h5>
+            <button
+                onClick={(e) => {
+                    deleteClicked(log);
+                    e.stopPropagation();
+                }}
+            > DELETE </button>
+        </div>
     );
 };
 
