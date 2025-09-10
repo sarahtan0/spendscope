@@ -81,7 +81,7 @@ export const modifyTotal: RequestHandler <unknown, unknown, modifyTotalBody, unk
         try{
             const newUser = await UserModel.findOneAndUpdate({_id: userId},
                 {$set:{[`monthTotals.${monthIndex}`]:newValue}},
-                {upsert: true, new: true}
+                {new: true}
             )
             res.status(200).json(newUser);
         } catch(error){

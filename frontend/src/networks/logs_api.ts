@@ -13,13 +13,13 @@ async function fetchData (input: RequestInfo, init?: RequestInit){
     }
 }
 
-interface modifyCredentails {
+interface modifyCredentials {
     userId: string,
     monthIndex: number,
     newValue?: number
 }
 
-export async function modifyMonthTotals(credentials: modifyCredentails): Promise<User>{
+export async function modifyMonthTotals(credentials: modifyCredentials): Promise<User>{
     const response = await fetchData("/users/modify-month-totals", {
         method: "PATCH", 
         credentials: "include",
