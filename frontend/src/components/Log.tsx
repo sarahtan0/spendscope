@@ -1,6 +1,8 @@
 import {LogObject} from "../models/Log";
 import styles from "../styles/util.module.css";
 import moment from "moment";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 interface LogProps {
     log: LogObject,
@@ -41,7 +43,7 @@ const Log = ({log, deleteClicked, onLogClicked} : LogProps) => {
                     deleteClicked(log);
                     e.stopPropagation();
                 }}
-            > DELETE </button>
+            > <FontAwesomeIcon icon={faTrash}/> </button>
         </div>
     );
 };

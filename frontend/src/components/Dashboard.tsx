@@ -48,23 +48,6 @@ const Dashboard = ({logs}: DashboardProps) => {
                 const pastTotals: number[] = await LogsApi.getMonthTotals();
                 setMonthTotals(pastTotals);
 
-                let seenSections = new Set(["Clothes", "Essentials", "Miscellaneous", "Food"]);
-                let sortedSections: [string, number][] = [];
-                let totals: Record<string, number> = {};
-                retrievedLogs.forEach(log => 
-                    {
-                        if (log.section in seenSections) seenSections.delete(log.section);
-                        totals[log.section] = (totals[log.section] || 0) + log.cost;
-                    }
-                )
-                sortedSections = Object.entries(totals).sort(([,a],[,b]) => b-a).slice(0,3);
-
-                while(sortedSections.length < 3){
-                    const randSection = seenSections.values().next().value;
-                    sortedSections.push([randSection ?? "Other", 0])
-                }
-
-                setTopThreeSections(sortedSections)
             } catch(error) {
                 console.error(error);
                 alert(error);
@@ -74,7 +57,33 @@ const Dashboard = ({logs}: DashboardProps) => {
             }
         }
         getMonthlyLogs();
-    }, [logs])
+    }, [logs]);
+
+    useEffect(() => {
+        async function updateTopThree() {
+            let seenSections = new Set(["Clothes", "Essentials", "Miscellaneous", "Food"]);
+            let sortedSections: [string, number][] = [];
+            let totals: Record<string, number> = {};
+
+            monthLogs.forEach(log => 
+                {
+                    if (seenSections.has(log.section)) seenSections.delete(log.section);
+                    totals[log.section] = (totals[log.section] || 0) + log.cost;
+                }
+            )
+            sortedSections = Object.entries(totals).sort(([,a],[,b]) => b-a).slice(0,3);
+
+            while(sortedSections.length < 3){
+                console.log("need another, picking a section from ", seenSections);
+                const randSection = seenSections.values().next().value;
+                sortedSections.push([randSection ?? "Other", 0])
+            }
+
+            console.log(sortedSections);
+            setTopThreeSections([...sortedSections]);
+        }
+        updateTopThree();
+    }, [monthLogs])
 
     function costPercentage(place: number, sections:[string, number][]){
         //calculates the percentage of the total with the place-th most spent category
@@ -85,7 +94,7 @@ const Dashboard = ({logs}: DashboardProps) => {
         const percentage = (sections[place-1][1]/sum).toFixed(2);
         return parseFloat(percentage)*100;
     }
-    
+
     return(
         <div className="flex flex-col p-4 w-full h-screen">
             <h1 className="ml-8 text-5xl font-bold">Dashboard</h1>
@@ -99,7 +108,7 @@ const Dashboard = ({logs}: DashboardProps) => {
                         <Card.Header className={styles.widgetHead}>
                             <h1 className="text-xl">Top Spending Categories</h1>
                         </Card.Header>
-                        <Card.Body className={`flex items-center justify-center`}>
+                        <Card.Body className="grid w-full gap-1 sm:grid-cols-3">
                             {topThreeSections.length >= 3 && 
                             <>
                                 <SpendingCategoryWidget
