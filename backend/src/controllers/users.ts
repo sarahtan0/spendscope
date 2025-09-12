@@ -2,8 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express";
 import UserModel from "../models/user";
 import createHttpError from "http-errors";
 import bcrypt from "bcrypt";
-import {ObjectId} from 'mongodb';
-import LogModel from "../models/log";
+import {ObjectId} from 'mongodb';   
 
 export const getAuthenticatedUser: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -115,28 +114,6 @@ export const login: RequestHandler <unknown, unknown, LoginBody, unknown> =
             req.session.userId = user._id;
             console.log("Session created", req.session);
 
-            const monthlyTotals = new Array(12).fill(0);
-            for(let i: number = 0; i < 12; i++) {
-                const startMonth = new Date(2025, i, 1);
-                const endMonth = new Date(2025, i+1, 0, 23, 59,59,999);
-
-                const logs = await LogModel.find(
-                            {
-                                userId : user._id,
-                                createdAt: {
-                                    $gte: startMonth,
-                                    $lte: endMonth
-                                }
-                            }).exec();
-                const monthSum = logs.reduce((total, log) => total + log.cost, 0);
-                monthlyTotals[i] = monthSum;
-            }
-            console.log("monthly totals: ", monthlyTotals);
-
-            await UserModel.findOneAndUpdate({username},
-                {$set: {monthTotals: monthlyTotals}},
-                {upsert: true, new: true}
-            )
 
             
             res.status(201).json(user);
