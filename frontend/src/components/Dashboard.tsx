@@ -96,41 +96,43 @@ const Dashboard = ({logs}: DashboardProps) => {
     }
 
     return(
-        <div className="flex flex-col p-4 w-full h-screen">
-            <h1 className="ml-8 text-5xl font-bold">Dashboard</h1>
-            <div className="w-full h-full flex justify-around">
-                <div className={"w-3/6 h-full flex flex-col gap-4 p-4"}>
+        <div className="flex flex-col pt-4 sm:pt-0 sm:p-4 w-full h-screen">
+            <h1 className="ml-2 sm:ml-8 text-5xl font-bold mb-2 ">Dashboard</h1>
+            <div className="w-full h-full flex flex-col sm:grid sm:grid-cols-12 justify-around">
+                <div className={"w-full h-full flex flex-col gap-4 p-2 sm:!p-4 sm:col-span-5"}>
                     <MonthTotalWidget
                         logs={monthLogs}
                     />
 
-                    <Card className={`h-3/4 ${styles.widgetCard}`}>
-                        <Card.Header className={styles.widgetHead}>
+                    <Card className={`h-full sm:h-3/4 ${styles.widgetCard}`}>
+                        <div className={styles.widgetHead}>
                             <h1 className="text-xl">Top Spending Categories</h1>
-                        </Card.Header>
-                        <Card.Body className="grid w-full gap-1 sm:grid-cols-3">
-                            {topThreeSections.length >= 3 && 
-                            <>
-                                <SpendingCategoryWidget
-                                    color="red"
-                                    section={topThreeSections[0][0]}
-                                    percentage={costPercentage(1, topThreeSections)}
-                                    cost={topThreeSections[0][1]}
-                                />
-                                <SpendingCategoryWidget
-                                    color="orange"
-                                    section={topThreeSections[1][0]}
-                                    percentage={costPercentage(2, topThreeSections)}
-                                    cost={topThreeSections[1][1]}
-                                />
-                                <SpendingCategoryWidget
-                                    color="green"
-                                    section={topThreeSections[2][0]}
-                                    percentage={costPercentage(3, topThreeSections)}
-                                    cost={topThreeSections[2][1]}
-                                />
-                            </>
-                            }
+                        </div>
+                        <Card.Body className="py-4 p-2 sm:!p-3 sm:flex sm:items-center">
+                            <div className={`grid w-full sm:grid-cols-3 gap-3 sm:!gap-x-1 sm:!gap-y-1 sm:h-3/4`}>
+                                {topThreeSections.length >= 3 && 
+                                <>
+                                    <SpendingCategoryWidget
+                                        color="red"
+                                        section={topThreeSections[0][0]}
+                                        percentage={costPercentage(1, topThreeSections)}
+                                        cost={topThreeSections[0][1]}
+                                    />
+                                    <SpendingCategoryWidget
+                                        color="orange"
+                                        section={topThreeSections[1][0]}
+                                        percentage={costPercentage(2, topThreeSections)}
+                                        cost={topThreeSections[1][1]}
+                                    />
+                                    <SpendingCategoryWidget
+                                        color="green"
+                                        section={topThreeSections[2][0]}
+                                        percentage={costPercentage(3, topThreeSections)}
+                                        cost={topThreeSections[2][1]}
+                                    />
+                                </>
+                                }
+                            </div>
                         </Card.Body>
                     </Card>
                     <Card className={`${styles.widgetCard} h-3/4`}>
@@ -149,11 +151,11 @@ const Dashboard = ({logs}: DashboardProps) => {
                         </Card.Body>
                     </Card>
                 </div>
-                <div className="p-4 w-9/12">
+                <div className="p-2 sm:!p-4 w-full sm:col-span-7">
                     <Card className={`${styles.widgetCard} h-full`}>
-                        <Card.Header className={styles.widgetHead}>
+                        <div className={styles.widgetHead}>
                             <h1 className="ml-4 text-xl">Logs</h1>
-                        </Card.Header>
+                        </div>
                         <Card.Body>
                             <div className={styles.gridLine}>
                                 <p>Name</p>
