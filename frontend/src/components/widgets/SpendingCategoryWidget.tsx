@@ -33,11 +33,13 @@ const SpendingCategoryWidget = ({color, section, percentage, cost}: SpendingCate
     const colors = colorMap[color] || colorMap["red"];
 
     return(
-        <div className={`w-full flex justify-center items-center`}>
-            <div className={`p-4 w-11/12 -mt-2 flex flex-col items-center gap-2 ${colors.bg} rounded-2xl`}>
-                <p className={`text-2xl font-bold ${colors.section}`}>{section === "Miscellaneous" ? "Misc" :section}</p>
-                <p className={`text-3xl font-extrabold ${colors.numbers}`}>{isFinite(percentage) ? percentage.toFixed(0) : "0"}%</p>
-                <p className={`text-2xl font-extrabold ${colors.numbers}`}>${cost ? cost : "0.00"}</p>
+        <div className={`w-full sm:h-full flex justify-center items-center`}>
+            <div className={`px-3 sm:h-full p-2 sm:p-0 w-11/12 grid grid-cols-3 sm:flex sm:flex-col sm:justify-center items-center gap-2 ${colors.bg} rounded-3xl sm:rounded-2xl`}>
+                <p className={`col-span-2 text-3xl sm:text-2xl font-bold ${colors.section}`}>{section === "Miscellaneous" ? "Misc" :section}</p>
+                <div className={`sm:h-1/2 flex flex-col`}>
+                    <p className={`text-right sm:text-center text-xl sm:text-3xl font-extrabold ${colors.numbers}`}>{isFinite(percentage) ? percentage.toFixed(0) : "0"}%</p>
+                    <p className={`text-right sm:text-center text-l sm:text-2xl ${colors.numbers}`}>${cost ? cost : "0.00"}</p>
+                </div>
             </div>
         </div>
     );

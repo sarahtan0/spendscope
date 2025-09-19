@@ -3,4 +3,6 @@ export interface User {
     username: string,
     email: string,
     password: string,
+    monthBudget: number,
+    monthTotals: number[]
 }

@@ -24,15 +24,23 @@ const NavBarLoggedIn = ({user, onLogoutSuccessful, onAddClicked}: NavBarLoggedIn
     }
 
     return(
-        <Navbar className={`flex-col justiy-between items-center flex h-full`}>
-            <div className={`flex flex-col h-full`}>
-                <Button disabled className={`${styles.navButton} w-full mb-4`}>{user.username}</Button>
-                <Button className={`${styles.navButton} w-full mb-4`} onClick={() => {logout()}}>
-                    <FontAwesomeIcon className={`fa-2x`}icon={faRightToBracket}/>
-                </Button>
+        <Navbar className={`w-full flex flex-row-reverse sm:!flex-col sm:justiy-between sm:items-center sm:flex sm:h-full
+                            gap-4 sm:!gap-0`}>
+            <div className={`${styles.navGrid} justify-center items-center h-full gap-4 sm:!gap-2`}>
+                <div className={`flex flex-row sm:!flex-col gap-4 sm:!gap-2`}>
+                    <Button variant="light" className={`${styles.navButton}`}>BUTTON</Button>
+                    <Button variant="light" className={`${styles.navButton}`}>BUTTON</Button>
+                </div>
+                <div></div>
+                <div className={`flex flex-row sm:!flex-col gap-4 sm:!gap-2`}>
+                    <Button variant="light" className={`${styles.navButton}`}>{user.username}</Button>
+                    <Button variant="light" className={`${styles.navButton}`} onClick={() => {logout()}}>
+                        <FontAwesomeIcon className={`fa-2x`}icon={faRightToBracket}/>
+                    </Button>
+                </div>
             </div>
-            <Button className={`${styles.navButton} w-full mb-4`} onClick={onAddClicked}>
-                <FontAwesomeIcon icon={faPlus}/>
+            <Button variant="light" className={` ${styles.addButton} mb-4`} onClick={onAddClicked}>
+                <FontAwesomeIcon className={`text-2xl sm:text-lg`}icon={faPlus}/>
             </Button>
         </Navbar>
     );
