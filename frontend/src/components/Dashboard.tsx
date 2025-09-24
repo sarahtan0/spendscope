@@ -98,8 +98,8 @@ const Dashboard = ({logs}: DashboardProps) => {
     return(
         <div className="flex flex-col pt-4 sm:pt-0 sm:p-4 w-full h-screen">
             <h1 className="ml-2 sm:ml-8 text-5xl font-bold mb-2 ">Dashboard</h1>
-            <div className="w-full h-full flex flex-col sm:grid sm:grid-cols-12 justify-around">
-                <div className={"w-full h-full flex flex-col gap-4 p-2 sm:!p-4 sm:col-span-5"}>
+            <div className="w-full h-full flex flex-col sm:grid sm:grid-cols-12 justify-around sm:max-h-[calc(100vh-100px)]">
+                <div className={"w-full h-full flex flex-col gap-4 p-2 sm:!p-4 sm:col-span-5 "}>
                     <MonthTotalWidget
                         logs={monthLogs}
                     />
@@ -151,8 +151,8 @@ const Dashboard = ({logs}: DashboardProps) => {
                         </Card.Body>
                     </Card>
                 </div>
-                <div className="p-2 sm:!p-4 w-full sm:col-span-7">
-                    <Card className={`${styles.widgetCard} h-full`}>
+                <div className="p-2 sm:!p-4 w-full sm:col-span-7 max-h-[calc(100vh-200px)] sm:max-h-[calc(100vh-100px)]">
+                    <Card className={`${styles.widgetCard} h-full  overflow-y-auto`}>
                         <div className={styles.widgetHead}>
                             <h1 className="ml-4 text-xl">Logs</h1>
                         </div>

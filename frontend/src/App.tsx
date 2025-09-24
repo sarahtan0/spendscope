@@ -7,10 +7,10 @@ import LogsPageLoggedOutView from './components/LogsPageLoggedOutView';
 import Dashboard from './components/Dashboard';
 import AddLogModal from './components/AddEditLogModal';
 import { LogObject } from './models/Log';
+import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
+
 
 function App() {
-  const [showSignUp, setShowSignUp] = useState(false);
-  const [showLogin, setShowLogin] = useState(false);
   const [user, setUser] = useState<User|null>(null);
   const [showAddLog, setShowAddLog] = useState(false);
   const [logs, setLogs] = useState<LogObject[]>([]);
@@ -31,6 +31,12 @@ function App() {
   }, []);
 
   return (
+    // <BrowserRouter>
+    //   <Link to="/">Dashboard</Link> 
+    //   <Routes>
+    //     <Route path="/" element={<LogsPageLoggedOutView/>}/>
+    //   </Routes>
+    // </BrowserRouter>
     <div className={`flex flex-row h-screen p-4`}>
       <div className={`w-full h-full flex justify-center items-center`}>
         {user 
@@ -38,8 +44,6 @@ function App() {
           <>
           <NavBar
             user={user}
-            onLoginClicked={() => {setShowLogin(true)}}
-            onSignUpClicked={() => {setShowSignUp(true)}}
             onLogoutSuccessful={() => {setUser(null)}}
             onAddClicked={() => {setShowAddLog(true)}}
           />
