@@ -38,7 +38,7 @@ const SpendingCategoryWidget = ({color, section, percentage, cost}: SpendingCate
                 <p className={`col-span-2 text-3xl sm:text-2xl font-bold ${colors.section}`}>{section === "Miscellaneous" ? "Misc" :section}</p>
                 <div className={`sm:h-1/2 flex flex-col`}>
                     <p className={`text-right sm:text-center text-xl sm:text-3xl font-extrabold ${colors.numbers}`}>{isFinite(percentage) ? percentage.toFixed(0) : "0"}%</p>
-                    <p className={`text-right sm:text-center text-l sm:text-2xl ${colors.numbers}`}>${cost ? cost : "0.00"}</p>
+                    <p className={`text-right sm:text-center text-l sm:text-2xl ${colors.numbers}`}>${cost ? Math.round(cost * 100) / 100 : "0.00"}</p>
                 </div>
             </div>
         </div>
